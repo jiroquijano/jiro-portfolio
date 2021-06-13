@@ -1,17 +1,20 @@
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import OfficePage from './components/Office/OfficePage';
 
 function App() {
   return (
     <div className="App">
-      Header/Navigation
-      <BrowserRouter>
-        <Switch>
-          <Route path='/' exact component={()=><div>Home</div>}/>
-          <Route path='/office' exact component={()=><div>Office</div>}/>
-          <Route path='/contact' exact component={()=><div>Contact</div>}/>
-        </Switch>
-      </BrowserRouter>
+          <div>
+            Header/Navigation
+          </div>
+          <BrowserRouter>
+            <Switch>
+              <Route path='/' exact component={()=><div>Home</div>}/>
+              <Route path='/office' exact component={OfficePage}/>
+              <Route path='/contact' exact component={()=><div>Contact</div>}/>
+            </Switch>
+          </BrowserRouter>
     </div>
   );
 }
