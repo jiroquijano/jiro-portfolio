@@ -1,29 +1,38 @@
 import React, {useRef} from 'react';
-import {Grid, makeStyles} from '@material-ui/core';
+import {Container, makeStyles} from '@material-ui/core';
 import Character from './Character';
 
 const useStyles = makeStyles({
     canvas : {
-        background: '#EFEFEF',
+        background: '#FFFFFF',
+        backgroundImage: 'url("sprites/office/seamless-tiles.png")',
+        opacity: '1',
+        backgroundPosition: '-48px -48px',
         height: '600px',
-        display: 'flex'
+        maxWidth: '1400px',
+        display: 'flex',
+        border: '4px solid black',
+        position: 'relative'
     },
-    character: (props) => ({
-        position: 'relative',
-        top: `${props.y}px`,
-        left: `${props.x}px`
-    })
+    wall: {
+        width: '100%',
+        height: '100px',
+        backgroundImage: 'url("sprites/office/wall.png")',
+        position: 'absolute',
+        top: 0,
+        left: 0
+    }
 });
 
 const OfficeCanvas = () => {
     const classes = useStyles();
     const canvasRef = useRef(null);
+    const characterRef = useRef(null)
     return (
-        <Grid container item direction='row' ref={canvasRef} className={classes.canvas}>
-            <Grid item>
-                <Character canvas={canvasRef}/>
-            </Grid>
-        </Grid>
+        <Container container ref={canvasRef} className={classes.canvas}>
+            <div className={classes.wall}></div>
+            <Character ref={characterRef} canvas={canvasRef}/>
+        </Container>
     )
 }
 

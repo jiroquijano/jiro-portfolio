@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import OfficeCanvas from './OfficeCanvas'
 import {Grid, makeStyles, TextField, useMediaQuery} from '@material-ui/core';
 import {Redirect} from 'react-router-dom';
@@ -13,18 +13,22 @@ const useStyles = makeStyles({
 
 const OfficePage = () => {
     const classes = useStyles();
+    const [chat, setChat] = useState('');
     const isMobile = useMediaQuery('(max-width:768px)');
     return (
         <div className={classes.root}>
             { 
                 !isMobile ? (
-                    <Grid container direction='row'>
-                        <Grid item xs={4}>
-                            Chat
-                            <TextField fullWidth/>
-                        </Grid>
-                        <Grid item xs={8}>
+                    <Grid container direction='column'>
+                        <Grid item>
                             <OfficeCanvas/>
+                        </Grid>
+                        <Grid item>
+                            <TextField 
+                                fullWidth
+                                value={chat}
+                                onChange={(e)=>setChat(e.target.value)}
+                            />
                         </Grid>
                     </Grid>
                 ) : (
