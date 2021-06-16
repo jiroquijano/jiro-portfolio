@@ -15,6 +15,7 @@ const OfficePage = () => {
     const classes = useStyles();
     const [chat, setChat] = useState('');
     const isMobile = useMediaQuery('(max-width:768px)');
+
     return (
         <div className={classes.root}>
             { 
