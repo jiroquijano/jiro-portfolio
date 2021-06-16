@@ -1,9 +1,10 @@
-import React, {useRef, useState, useContext} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Container, makeStyles} from '@material-ui/core';
 import Character from './Character';
 import Wall from './Decorations/Wall';
 import Item from './Decorations/Item';
 import useResize from '../../hooks/useResize';
+import OfficeHitMapContext from '../../context/OfficeHitMapContext';
 const JIRO_SPRITE = 'sprites/jiro-sprite.png'
 const BONNA_SPRITE = 'sprites/bonna-sprite.png'
 const WALL_SPRITE  = 'sprites/office/wall-blue.png'
@@ -17,9 +18,10 @@ const useStyles = makeStyles({
         opacity: '1',
         backgroundPosition: '-48px -48px',
         height: '600px',
+        width: '80vw',
         maxWidth: '1400px',
         display: 'flex',
-        border: '4px solid black',
+        border: '4px solid #565656',
         position: 'relative'
     }
 });
@@ -30,46 +32,50 @@ const OfficeCanvas = () => {
     const [control, setControl] = useState('saf');
     const [hitMap, setHitMap] = useState([]);
 
-    useResize(()=>{
-        if(canvasRef !== null) {
-            const boxesX =  Math.floor(canvasRef?.current?.offsetWidth/10);
-            const boxesY = Math.floor(canvasRef?.current?.offsetHeight/10);
-            const hitMapArray = Array.from(Array(boxesY)).map(()=>{
-                return Array.from(Array(boxesX)).map(()=>0);
-            });
-            setHitMap(hitMapArray)
-        }
-    })
- 
+    const calculateHitMap = () => {
+        const boxesX =  Math.floor(canvasRef?.current?.offsetWidth/10);
+        const boxesY = Math.floor(canvasRef?.current?.offsetHeight/10);
+        const hitMapArray = Array.from(Array(boxesY)).map(()=>{
+            return Array.from(Array(boxesX)).map(()=>0);
+        });
+        setHitMap(hitMapArray);
+    }
+
+    useEffect(()=>{
+        calculateHitMap();
+    },[]);
+
     return (
-        <Container container ref={canvasRef} className={classes.canvas}>
-            <Wall decor={WALL_SPRITE}/>
-            <Item 
-                canvas={canvasRef}
-                spriteImage={BOARD_SPRITE}
-                posX={300}
-                posY={600}
-                width={126}
-                height={100}
-            />
-            <Character 
-                canvas={canvasRef}
-                sprite={BONNA_SPRITE}
-                startPosX={110}
-                startPosY={110}
-                name={'bonnie'}
-                isControlled={control === 'bonnie'}
-                selectCharacter={()=>setControl('bonnie')}
-            />
-            <Character 
-                canvas={canvasRef}
-                sprite={JIRO_SPRITE}
-                startPosX={210}
-                startPosY={110}
-                name={'saf'}
-                isControlled={control === 'saf'}
-                selectCharacter={()=>setControl('saf')}
-            />
+        <Container ref={canvasRef} className={classes.canvas}>
+            <OfficeHitMapContext.Provider value={{hitMap, setHitMap}}>
+                <Wall decor={WALL_SPRITE}/>
+                <Item 
+                    canvas={canvasRef}
+                    spriteImage={BOARD_SPRITE}
+                    posX={10}
+                    posY={0}
+                    width={126}
+                    height={100}
+                />
+                <Character 
+                    canvas={canvasRef}
+                    sprite={BONNA_SPRITE}
+                    posX={500}
+                    posY={490}
+                    name={'bonnie'}
+                    isControlled={control === 'bonnie'}
+                    selectCharacter={()=>setControl('bonnie')}
+                />
+                <Character 
+                    canvas={canvasRef}
+                    sprite={JIRO_SPRITE}
+                    posX={560}
+                    posY={490}
+                    name={'saf'}
+                    isControlled={control === 'saf'}
+                    selectCharacter={()=>setControl('saf')}
+                />
+            </OfficeHitMapContext.Provider>
         </Container>
     )
 }

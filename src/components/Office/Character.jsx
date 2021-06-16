@@ -7,6 +7,7 @@ import useResize from '../../hooks/useResize';
 const STEP = 10;
 const SPRITE_STEP_MAX = 3;
 const SPRITE_DIMENSION = 100;
+const CHARACTER_WIDTH = 70;
 
 const useStyles = makeStyles({
     character: (props) => ({
@@ -22,14 +23,20 @@ const useStyles = makeStyles({
     })
 });
 
-const Character = ({canvas, sprite, startPosX, startPosY, name, isControlled, selectCharacter}) => {
+const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharacter}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const [direction, setDirection] = useState(300);
     const [step, setStep] = useState(1);
     const characterRef = useRef(null);
-    const [isPopperOpen, setPopperOpen] = useState(true);
+    const [isPopperOpen, setPopperOpen] = useState(false);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
+    const hitMapX = Math.floor((positionX+20)/10);
+    const hitMapY = Math.floor((positionY)/10);
+    const hitMapSpriteWidth = CHARACTER_WIDTH/10;
+    const hitMapSpriteHeight = Math.floor(characterRef?.current?.offsetHeight);
+    console.log(`${name} coordinates: ${hitMapX}, ${hitMapY}`);
+    console.log(`occupied coordinates: ${hitMapX} - ${hitMapX + hitMapSpriteWidth}, ${hitMapY} - ${hitMapY+hitMapSpriteHeight}`);
 
     const directionMap = {
         up: 0,
@@ -53,8 +60,8 @@ const Character = ({canvas, sprite, startPosX, startPosY, name, isControlled, se
     }
 
     const realignPosition = () =>{
-        setX(canvas.current?.offsetWidth - startPosX);
-        setY(canvas.current?.offsetHeight - startPosY);
+        setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
+        setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
     }
 
     useEffect(()=>{
@@ -64,7 +71,6 @@ const Character = ({canvas, sprite, startPosX, startPosY, name, isControlled, se
     useResize(()=>{
         realignPosition();
     });
-
 
     useKeyPress(handleKeyPress);
 
@@ -114,8 +120,7 @@ const Character = ({canvas, sprite, startPosX, startPosY, name, isControlled, se
             }
         }
     }
-    console.log(`${name} coordinates: ${positionX}, ${positionY}`);
-    console.log(`occupied coordinates: ${positionX} - ${positionX + characterRef?.current?.offsetWidth}, ${positionY} - ${positionY+characterRef?.current?.offsetHeight}`);
+    
     return (
         <>
             <div ref={characterRef} className={classes.character} onClick={selectCharacter}/>

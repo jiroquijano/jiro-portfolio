@@ -7,20 +7,21 @@ const useStyles = makeStyles({
     root: {
         padding: '50px 30px',
         marginTop: '30px',
-        background: '#FFFFFF'
+        background: '#ECECEC'
     }
 })
 
 const OfficePage = () => {
     const classes = useStyles();
     const [chat, setChat] = useState('');
-    const isMobile = useMediaQuery('(max-width:768px)');
+    //const isMobile = useMediaQuery('(max-width:768px)');
+    const isMobile = false;
 
     return (
         <div className={classes.root}>
             { 
                 !isMobile ? (
-                    <Grid container direction='column'>
+                    <Grid container direction='column' alignContent='center' alignItems='stretch'>
                         <Grid item>
                             <OfficeCanvas/>
                         </Grid>
