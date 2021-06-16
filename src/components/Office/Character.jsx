@@ -2,33 +2,34 @@ import React, {useState, useEffect, useRef} from 'react';
 import {makeStyles, Popper} from '@material-ui/core';
 import useKeyPress from '../../hooks/useKeyPress';
 import useKeyRelease from '../../hooks/useKeyRelease';
+import useResize from '../../hooks/useResize';
 
 const STEP = 10;
 const SPRITE_STEP_MAX = 3;
 const SPRITE_DIMENSION = 100;
-const JIRO_SPRITE = 'sprites/character-sprite.png'
 
 const useStyles = makeStyles({
     character: (props) => ({
         position: 'absolute',
-        backgroundImage: `url(${JIRO_SPRITE})`,
+        backgroundImage: `url(${props.sprite})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: `-${props.step * SPRITE_DIMENSION}px -${props.direction}px`,
         top: `${props.positionY}px`,
         left: `${props.positionX}px`,
         height: `${SPRITE_DIMENSION}px`,
-        width: `${SPRITE_DIMENSION}px`
+        width: `${SPRITE_DIMENSION}px`,
+        zIndex: props.positionY
     })
 });
 
-const Character = ({canvas}) => {
+const Character = ({canvas, sprite, startPosX, startPosY, name, isControlled, selectCharacter}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const [direction, setDirection] = useState(300);
     const [step, setStep] = useState(1);
     const characterRef = useRef(null);
     const [isPopperOpen, setPopperOpen] = useState(true);
-    const classes = useStyles({positionX, positionY, step, direction});
+    const classes = useStyles({positionX, positionY, step, direction, sprite});
 
     const directionMap = {
         up: 0,
@@ -37,18 +38,8 @@ const Character = ({canvas}) => {
         down: 3
     }
 
-    useEffect(()=>{
-        setX(canvas.current?.offsetWidth - 110);
-        setY(canvas.current?.offsetHeight - 110);
-        window.addEventListener('resize', (e)=>{
-            setX(canvas.current?.offsetWidth/2);
-            setY(canvas.current?.offsetHeight - 110);
-        });
-        return () => window.removeEventListener('resize', ()=>{});
-    },[canvas]);
-
     const handleKeyPress = (event) => {
-        if(event.key.includes('Arrow')) {
+        if(event.key.includes('Arrow') && isControlled) {
             const movement = event.key.replace('Arrow','').toLowerCase();
             setDirection(directionMap[movement] * SPRITE_DIMENSION);
             setStep((prevStep) => {
@@ -61,8 +52,23 @@ const Character = ({canvas}) => {
         if(event.key.toLowerCase() === 'x') alert('interact');
     }
 
+    const realignPosition = () =>{
+        setX(canvas.current?.offsetWidth - startPosX);
+        setY(canvas.current?.offsetHeight - startPosY);
+    }
+
+    useEffect(()=>{
+        realignPosition();
+    },[canvas]);
+
+    useResize(()=>{
+        realignPosition();
+    });
+
+
     useKeyPress(handleKeyPress);
-    useKeyRelease(()=>{
+
+    useKeyRelease(()=>{ //idle character sprite on key up
         setDirection(300);
         setStep(1);
     });
@@ -108,17 +114,18 @@ const Character = ({canvas}) => {
             }
         }
     }
-
+    console.log(`${name} coordinates: ${positionX}, ${positionY}`);
+    console.log(`occupied coordinates: ${positionX} - ${positionX + characterRef?.current?.offsetWidth}, ${positionY} - ${positionY+characterRef?.current?.offsetHeight}`);
     return (
         <>
-            <div ref={characterRef} className={classes.character}/>
+            <div ref={characterRef} className={classes.character} onClick={selectCharacter}/>
             <Popper
                 anchorEl={characterRef.current}
                 open={isPopperOpen}
                 placement='top'
             >
                 <div style={{color: 'black'}}>
-                    jiro
+                    {`${name}`}
                 </div>
             </Popper>
         </>
