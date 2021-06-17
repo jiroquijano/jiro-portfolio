@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, useRef} from 'react';
 import {makeStyles} from '@material-ui/core';
 import useResize from '../../../hooks/useResize';
 import OfficeHitMapContext from '../../../context/OfficeHitMapContext';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const useStyles = makeStyles({
     item: (props) => ({
@@ -10,11 +11,12 @@ const useStyles = makeStyles({
         backgroundImage: `url(${props.spriteImage})`,
         position: 'absolute',
         top: props.positionY,
-        left: props.positionX
+        left: props.positionX,
+        zIndex: props.positionY
     })
 })
 
-const Item = ({canvas, spriteImage, posX, posY, width, height}) => {
+const Item = ({canvas, spriteImage, posX, posY, width, height, collision}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const itemRef = useRef(null);
@@ -33,7 +35,7 @@ const Item = ({canvas, spriteImage, posX, posY, width, height}) => {
         const hitMapCopy = hitMap;
         for(let currentRow = hitMapY; currentRow < hitMapY + hitMapSpriteHeight; currentRow++) {
             const itemHitMapRow = hitMap[currentRow];
-            itemHitMapRow.fill('A', hitMapX, hitMapX + hitMapSpriteWidth + 1);
+            itemHitMapRow.fill(`${collision ? 'X' : 'A'}`, hitMapX, hitMapX + hitMapSpriteWidth + 1);
             hitMapCopy[currentRow] = itemHitMapRow;
         }
         setHitMap(hitMapCopy);
@@ -54,7 +56,7 @@ const Item = ({canvas, spriteImage, posX, posY, width, height}) => {
 
     const classes = useStyles({spriteImage, positionX, positionY, width, height});
     return (
-        <div className={classes.item} ref={itemRef}/>
+        <div className={classes.item} ref={itemRef} onClick={()=>console.log(hitMap)}/>
     )
 }
 

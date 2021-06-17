@@ -3,7 +3,6 @@ import {Container, makeStyles} from '@material-ui/core';
 import Character from './Character';
 import Wall from './Decorations/Wall';
 import Item from './Decorations/Item';
-import useResize from '../../hooks/useResize';
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
 const JIRO_SPRITE = 'sprites/jiro-sprite.png'
 const BONNA_SPRITE = 'sprites/bonna-sprite.png'
@@ -56,6 +55,16 @@ const OfficeCanvas = () => {
                     posY={0}
                     width={126}
                     height={100}
+                    collision={true}
+                />
+                 <Item 
+                    canvas={canvasRef}
+                    spriteImage={BOARD_SPRITE}
+                    posX={400}
+                    posY={300}
+                    width={126}
+                    height={100}
+                    collision={true}
                 />
                 <Character 
                     canvas={canvasRef}

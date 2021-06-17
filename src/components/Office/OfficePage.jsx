@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import OfficeCanvas from './OfficeCanvas'
 import {Grid, makeStyles, TextField, useMediaQuery} from '@material-ui/core';
 import {Redirect} from 'react-router-dom';
+import { Fade } from '@material-ui/core';
 
 const useStyles = makeStyles({
     root: {
@@ -21,18 +22,20 @@ const OfficePage = () => {
         <div className={classes.root}>
             { 
                 !isMobile ? (
-                    <Grid container direction='column' alignContent='center' alignItems='stretch'>
-                        <Grid item>
-                            <OfficeCanvas/>
-                        </Grid>
-                        <Grid item>
-                            <TextField 
-                                fullWidth
-                                value={chat}
-                                onChange={(e)=>setChat(e.target.value)}
-                            />
-                        </Grid>
-                    </Grid>
+                        <Fade in={true} timeout={500}>
+                            <Grid container direction='column' alignContent='center' alignItems='stretch'>
+                                    <Grid item>
+                                        <OfficeCanvas/>
+                                    </Grid>
+                                <Grid item>
+                                    <TextField 
+                                        fullWidth
+                                        value={chat}
+                                        onChange={(e)=>setChat(e.target.value)}
+                                        />
+                                </Grid>
+                            </Grid>
+                        </Fade>
                 ) : (
                     <Redirect to='/'/>
                 )

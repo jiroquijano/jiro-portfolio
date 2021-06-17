@@ -1,8 +1,9 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {makeStyles, Popper} from '@material-ui/core';
 import useKeyPress from '../../hooks/useKeyPress';
 import useKeyRelease from '../../hooks/useKeyRelease';
 import useResize from '../../hooks/useResize';
+import OfficeHitMapContext from '../../context/OfficeHitMapContext';
 
 const STEP = 10;
 const SPRITE_STEP_MAX = 3;
@@ -29,12 +30,13 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
     const [direction, setDirection] = useState(300);
     const [step, setStep] = useState(1);
     const characterRef = useRef(null);
+    const {hitMap, setHitMap} = useContext(OfficeHitMapContext);
     const [isPopperOpen, setPopperOpen] = useState(false);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
     const hitMapX = Math.floor((positionX+20)/10);
     const hitMapY = Math.floor((positionY)/10);
     const hitMapSpriteWidth = CHARACTER_WIDTH/10;
-    const hitMapSpriteHeight = Math.floor(characterRef?.current?.offsetHeight);
+    const hitMapSpriteHeight = Math.floor(characterRef?.current?.offsetHeight/10);
     console.log(`${name} coordinates: ${hitMapX}, ${hitMapY}`);
     console.log(`occupied coordinates: ${hitMapX} - ${hitMapX + hitMapSpriteWidth}, ${hitMapY} - ${hitMapY+hitMapSpriteHeight}`);
 
@@ -79,38 +81,56 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
         setStep(1);
     });
 
-    const validateMovement = (newX, newY) => {
+    const isWithinCanvas = (newX, newY) => {
         const canvasWidth = canvas.current.offsetWidth;
         const canvasHeight = canvas.current.offsetHeight;
         return (newX > 0 && newX < canvasWidth - 100) && (newY > 0 && newY < canvasHeight - 100);
+    }
+
+    const doesHitMapAllowMovement = (newHitMapX, newHitMapY, direction) => {
+        let collisionMap = [];
+        const spriteBodyMiddleHitMap = newHitMapY+Math.ceil(hitMapSpriteHeight/2);
+        const spriteBodyWidthHitMapEnd = newHitMapX+hitMapSpriteWidth-2;
+        if(['up','down'].includes(direction)){
+            collisionMap = hitMap[spriteBodyMiddleHitMap].slice(newHitMapX+1,spriteBodyWidthHitMapEnd);
+        } else if(['left', 'right'].includes(direction)){
+            const xToCheck = direction === 'left' ? newHitMapX : spriteBodyWidthHitMapEnd;
+            collisionMap.push(hitMap[spriteBodyMiddleHitMap][xToCheck]);
+        }
+        console.log(collisionMap);
+        return collisionMap.every((value)=>value !== 'X');
     }
 
     const moveCharacter = (movement) => {
         switch (movement) {
             case 'up' : {
                 setY((previousY) => {
-                    return validateMovement(positionX, previousY-STEP) ?
+                    return isWithinCanvas(positionX, previousY-STEP) && 
+                        doesHitMapAllowMovement(hitMapX, hitMapY-1, movement) ?
                         previousY - STEP : previousY;
                 })
                 break;
             }
             case 'down' : {
                 setY((previousY) => {
-                    return validateMovement(positionX, previousY+STEP) ?
+                    return isWithinCanvas(positionX, previousY+STEP) &&
+                        doesHitMapAllowMovement(hitMapX, hitMapY+2, movement) ?
                         previousY + STEP : previousY;
                 });
                 break;
             }
             case 'right' : {
                 setX((previousX) => {
-                    return validateMovement(previousX+STEP, positionY) ?
+                    return isWithinCanvas(previousX+STEP, positionY) &&
+                        doesHitMapAllowMovement(hitMapX+1, hitMapY, movement) ?
                         previousX+STEP : previousX;
                 });
                 break;
             }
             case 'left' : {
                 setX((previousX) => {
-                    return validateMovement(previousX-STEP, positionY) ?
+                    return isWithinCanvas(previousX-STEP, positionY) &&
+                        doesHitMapAllowMovement(hitMapX-1, hitMapY, movement) ?
                         previousX-STEP : previousX;
                 });
                 break;
