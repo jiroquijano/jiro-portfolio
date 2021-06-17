@@ -2,7 +2,6 @@ import React, {useState, useEffect, useContext, useRef} from 'react';
 import {makeStyles} from '@material-ui/core';
 import useResize from '../../../hooks/useResize';
 import OfficeHitMapContext from '../../../context/OfficeHitMapContext';
-import zIndex from '@material-ui/core/styles/zIndex';
 
 const useStyles = makeStyles({
     item: (props) => ({

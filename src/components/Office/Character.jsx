@@ -37,8 +37,6 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
     const hitMapY = Math.floor((positionY)/10);
     const hitMapSpriteWidth = CHARACTER_WIDTH/10;
     const hitMapSpriteHeight = Math.floor(characterRef?.current?.offsetHeight/10);
-    console.log(`${name} coordinates: ${hitMapX}, ${hitMapY}`);
-    console.log(`occupied coordinates: ${hitMapX} - ${hitMapX + hitMapSpriteWidth}, ${hitMapY} - ${hitMapY+hitMapSpriteHeight}`);
 
     const directionMap = {
         up: 0,
@@ -97,7 +95,6 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
             const xToCheck = direction === 'left' ? newHitMapX : spriteBodyWidthHitMapEnd;
             collisionMap.push(hitMap[spriteBodyMiddleHitMap][xToCheck]);
         }
-        console.log(collisionMap);
         return collisionMap.every((value)=>value !== 'X');
     }
 
