@@ -6,16 +6,17 @@ import OfficeHitMapContext from '../../../context/OfficeHitMapContext';
 const useStyles = makeStyles({
     item: (props) => ({
         width: props.width,
-        height: '100px',
+        height: props.height,
         backgroundImage: `url(${props.spriteImage})`,
         position: 'absolute',
         top: props.positionY,
         left: props.positionX,
-        zIndex: props.positionY
+        zIndex: props.zIndex || props.positionY,
+        border: props.border
     })
 })
 
-const Item = ({canvas, spriteImage, posX, posY, width, height, collision}) => {
+const Item = ({canvas, spriteImage, posX, posY, width, height, collision, border='', zIndex}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const itemRef = useRef(null);
@@ -53,7 +54,7 @@ const Item = ({canvas, spriteImage, posX, posY, width, height, collision}) => {
         updateHitMap();
     });
 
-    const classes = useStyles({spriteImage, positionX, positionY, width, height});
+    const classes = useStyles({spriteImage, positionX, positionY, width, height, border, zIndex});
     return (
         <div className={classes.item} ref={itemRef} onClick={()=>console.log(hitMap)}/>
     )
