@@ -30,7 +30,7 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
     const [direction, setDirection] = useState(300);
     const [step, setStep] = useState(1);
     const characterRef = useRef(null);
-    const {hitMap, setHitMap} = useContext(OfficeHitMapContext);
+    const {hitMap} = useContext(OfficeHitMapContext);
     const [isPopperOpen, setPopperOpen] = useState(false);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
     const hitMapX = Math.floor((positionX+20)/10);
@@ -68,13 +68,10 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
         realignPosition();
     },[canvas]);
 
-    useResize(()=>{
-        realignPosition();
-    });
-
     useKeyPress(handleKeyPress);
 
-    useKeyRelease(()=>{ //idle character sprite on key up
+    useKeyRelease(()=>{ 
+        //idle character sprite on key up
         setDirection(300);
         setStep(1);
     });
@@ -87,7 +84,7 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
 
     const doesHitMapAllowMovement = (newHitMapX, newHitMapY, direction) => {
         let collisionMap = [];
-        const spriteBodyMiddleHitMap = newHitMapY+Math.ceil(hitMapSpriteHeight/2);
+        const spriteBodyMiddleHitMap = newHitMapY+Math.ceil(hitMapSpriteHeight/1.5);
         const spriteBodyWidthHitMapEnd = newHitMapX+hitMapSpriteWidth-2;
         if(['up','down'].includes(direction)){
             collisionMap = hitMap[spriteBodyMiddleHitMap].slice(newHitMapX+1,spriteBodyWidthHitMapEnd);
@@ -95,7 +92,8 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
             const xToCheck = direction === 'left' ? newHitMapX : spriteBodyWidthHitMapEnd;
             collisionMap.push(hitMap[spriteBodyMiddleHitMap][xToCheck]);
         }
-        return collisionMap.every((value)=>value !== 'X');
+        //hitmap convention = <type>_<id>_<attributes>
+        return collisionMap.every((value)=> String(value).split('_')[2] !== 'X');
     }
 
     const moveCharacter = (movement) => {

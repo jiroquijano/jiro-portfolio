@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     })
 })
 
-const Item = ({canvas, spriteImage, posX, posY, width, height, collision, border='', zIndex}) => {
+const Item = ({canvas, type, id, spriteImage, posX, posY, width, height, collision, border='', zIndex}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const itemRef = useRef(null);
@@ -32,10 +32,11 @@ const Item = ({canvas, spriteImage, posX, posY, width, height, collision, border
     }
 
     const updateHitMap = () =>{
+        //HitMap item identity is <item_type>_<item_type_number>_<attributes>
         const hitMapCopy = hitMap;
         for(let currentRow = hitMapY; currentRow < hitMapY + hitMapSpriteHeight; currentRow++) {
             const itemHitMapRow = hitMap[currentRow];
-            itemHitMapRow.fill(`${collision ? 'X' : 'A'}`, hitMapX, hitMapX + hitMapSpriteWidth + 1);
+            itemHitMapRow.fill(`${collision ? `${type}_${id}_X` : `${type}_${id}_A`}`, hitMapX, hitMapX + hitMapSpriteWidth + 1);
             hitMapCopy[currentRow] = itemHitMapRow;
         }
         setHitMap(hitMapCopy);

@@ -1,17 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Container, makeStyles} from '@material-ui/core';
 import Character from './Character';
-import Wall from './Decorations/Wall';
-import Item from './Decorations/Item';
+
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
+import OfficeDecorations from './OfficeDecorations';
 const JIRO_SPRITE = 'sprites/jiro-sprite.png'
 const BONNA_SPRITE = 'sprites/bonna-sprite.png'
-const WALL_BLUE_SPRITE  = 'sprites/office/wall-blue.png'
-const WALL_WHITE_SPRITE  = 'sprites/office/wall-white.png'
-const WALL_THIN_SPRITE  = 'sprites/office/wall-thin.png'
-const BOARD_SPRITE  = 'sprites/office/board.png'
-const RECEPTION_SPRITE  = 'sprites/office/reception.png'
-const COUCH_SPRITE  = 'sprites/office/couch.png'
 
 
 const useStyles = makeStyles({
@@ -48,60 +42,37 @@ const OfficeCanvas = () => {
         calculateHitMap();
     },[]);
 
+    const decors = {
+        boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: false}],
+        sideWalls: [
+            {posX: 214, posY: 120, width: 25, height: 65, collision: false},
+            {posX: 214, posY: 300, width: 25, height: 65, collision: false},
+            {posX: 632, posY: 158, width: 25, height: 142, collision: true},
+        ],
+        walls: [
+            {posX: 0, posY: 360, width: 235, height: 100, collision: true, border:'2px #3a3a4f solid'},
+            {posX: 0, posY: 180, width: 235, height: 100, collision: true, border:'2px #3a3a4f solid'},
+            {posX: 632, posY: 298, width: 357, height: 100, collision: true, border:'2px #3a3a4f solid'},
+        ],
+        couches: [{posX: 743, posY: 348, width: 180, height: 107, collision: true}],
+        receptions: [{posX: 480, posY: 380, width: 200, height: 120, collision: true}],
+        vendos: [
+            {posX: 900, posY: 0, width: 89, height: 120, collision: true},
+            {posX: 810, posY: 0, width: 89, height: 120, collision: true}
+        ]
+    }
+
     return (
         <Container ref={canvasRef} className={classes.canvas}>
             <OfficeHitMapContext.Provider value={{hitMap, setHitMap}}>
-                <Wall decor={WALL_BLUE_SPRITE}/>
-                <Item 
-                    canvas={canvasRef}
-                    spriteImage={BOARD_SPRITE}
-                    posX={30}
-                    posY={0}
-                    width={126}
-                    height={100}
-                    collision={false}
-                />
-                <Item 
-                    canvas={canvasRef}
-                    spriteImage={WALL_WHITE_SPRITE}
-                    posX={632}
-                    posY={298}
-                    width={357}
-                    height={100}
-                    collision={true}
-                    border='2px #3a3a4f solid'
-                />
-                <Item 
-                    canvas={canvasRef}
-                    spriteImage={WALL_THIN_SPRITE}
-                    posX={632}
-                    posY={158}
-                    width={25}
-                    height={142}
-                    collision={true}
-                />
-                 <Item 
-                    canvas={canvasRef}
-                    spriteImage={RECEPTION_SPRITE}
-                    posX={480}
-                    posY={380}
-                    width={200}
-                    height={120}
-                    collision={true}
-                />
-                 <Item 
-                    canvas={canvasRef}
-                    spriteImage={COUCH_SPRITE}
-                    posX={743}
-                    posY={348}
-                    width={180}
-                    height={107}
-                    collision={true}
+                <OfficeDecorations
+                    canvasRef={canvasRef}
+                    decors={decors}
                 />
                 <Character 
                     canvas={canvasRef}
                     sprite={BONNA_SPRITE}
-                    posX={500}
+                    posX={890}
                     posY={490}
                     name={'bonnie'}
                     isControlled={control === 'bonnie'}
