@@ -74,12 +74,27 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
         //idle character sprite on key up
         setDirection(300);
         setStep(1);
+        checkInteractiveObjects();
     });
+
+    const checkInteractiveObjects = () => {
+        const spriteBodyHeightHitMapEnd = hitMapY+hitMapSpriteHeight;
+        const spriteBodyWidthHitMapLength = hitMapX+hitMapSpriteWidth-2;
+        const northItems = hitMap[hitMapY].slice(hitMapX+2, spriteBodyWidthHitMapLength);
+        const southItems = hitMap[spriteBodyHeightHitMapEnd-1].slice(hitMapX+2, spriteBodyWidthHitMapLength);
+        const westItems = hitMap[hitMapY+Math.ceil(hitMapSpriteHeight/2)].slice(hitMapX-2,hitMapX-1);
+        const eastItems = hitMap[hitMapY+Math.ceil(hitMapSpriteHeight/2)].slice(spriteBodyWidthHitMapLength+2, spriteBodyWidthHitMapLength+3);
+        const allUniqueItems = Array.from(new Set([...northItems, ...southItems, ...westItems, ...eastItems]));
+        const filteredItems = allUniqueItems.filter((item)=>{
+            return String(item).includes('_X');
+        })
+        console.log('items: ', filteredItems);
+    }
 
     const isWithinCanvas = (newX, newY) => {
         const canvasWidth = canvas.current.offsetWidth;
         const canvasHeight = canvas.current.offsetHeight;
-        return (newX > 0 && newX < canvasWidth - 100) && (newY > 0 && newY < canvasHeight - 100);
+        return (newX > -20 && newX < canvasWidth - 80) && (newY > 0 && newY < canvasHeight - 100);
     }
 
     const doesHitMapAllowMovement = (newHitMapX, newHitMapY, direction) => {

@@ -1,45 +1,36 @@
 import React, {useState} from 'react';
 import OfficeCanvas from './OfficeCanvas'
-import {Grid, makeStyles, TextField, useMediaQuery} from '@material-ui/core';
-import {Redirect} from 'react-router-dom';
+import {Grid, makeStyles, Drawer} from '@material-ui/core';
 import { Fade } from '@material-ui/core';
 
 const useStyles = makeStyles({
     root: {
         padding: '50px 30px',
-        marginTop: '30px',
         background: '#ECECEC'
+    },
+    paper: {
+        width: '50vw'
     }
 })
 
 const OfficePage = () => {
     const classes = useStyles();
-    const [chat, setChat] = useState('');
-    //const isMobile = useMediaQuery('(max-width:768px)');
-    const isMobile = false;
+    const [open, setOpen] = useState(false);
 
     return (
         <div className={classes.root}>
-            { 
-                !isMobile ? (
-                        <Fade in={true} timeout={500}>
-                            <Grid container direction='column' alignContent='center' alignItems='stretch'>
-                                    <Grid item>
-                                        <OfficeCanvas/>
-                                    </Grid>
-                                <Grid item>
-                                    <TextField 
-                                        fullWidth
-                                        value={chat}
-                                        onChange={(e)=>setChat(e.target.value)}
-                                        />
-                                </Grid>
-                            </Grid>
-                        </Fade>
-                ) : (
-                    <Redirect to='/'/>
-                )
-            }
+            <Fade in={true} timeout={500}>
+                <Grid container direction='column' alignContent='center' alignItems='stretch'>
+                    <Grid container item direction='row' alignItems='center' justify='center'>
+                        <Grid item>
+                            <OfficeCanvas setDrawerOpen={setOpen}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Fade>
+            <Drawer open={open} variant='persistent' anchor='right' classes={{ paper: classes.paper }}>
+                <div onClick={()=>setOpen(!open)}>hi</div>
+            </Drawer>
         </div>
     )
 }
