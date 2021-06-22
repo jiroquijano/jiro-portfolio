@@ -8,6 +8,7 @@ const BOARD_SPRITE  = 'sprites/office/board.png'
 const RECEPTION_SPRITE  = 'sprites/office/reception.png'
 const COUCH_SPRITE  = 'sprites/office/couch.png'
 const VENDO_SPRITE  = 'sprites/office/vendo-machine.png'
+const GLASS_WINDOW_SPRITE  = 'sprites/office/glass-window.png'
 
 const OfficeDecorations = ({decors, canvasRef}) => {
     const decorations = Object.keys(decors);
@@ -17,7 +18,8 @@ const OfficeDecorations = ({decors, canvasRef}) => {
         walls: WALL_WHITE_SPRITE,
         couches: COUCH_SPRITE,
         receptions: RECEPTION_SPRITE,
-        vendos: VENDO_SPRITE
+        vendos: VENDO_SPRITE,
+        windows: GLASS_WINDOW_SPRITE
     }
 
     return (

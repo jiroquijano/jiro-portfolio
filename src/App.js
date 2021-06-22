@@ -5,9 +5,7 @@ import OfficePage from './components/Office/OfficePage';
 function App() {
   return (
     <div className="App">
-          <div>
-            Header/Navigation
-          </div>
+      {/* header/navigation goes here */}
           <BrowserRouter>
             <Switch>
               <Route path='/' exact component={()=><div>Home</div>}/>

@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     }
 });
 
-const OfficeCanvas = () => {
+const OfficeCanvas = ({setDrawerOpen}) => {
     const classes = useStyles();
     const canvasRef = useRef(null);
     const [control, setControl] = useState('saf');
@@ -59,6 +59,10 @@ const OfficeCanvas = () => {
         vendos: [
             {posX: 900, posY: 0, width: 89, height: 120, collision: true},
             {posX: 810, posY: 0, width: 89, height: 120, collision: true}
+        ],
+        windows: [
+            {posX: 250, posY: 10, width: 180, height: 67, collision: false},
+            {posX: 450, posY: 10, width: 180, height: 67, collision: false}
         ]
     }
 
@@ -76,7 +80,7 @@ const OfficeCanvas = () => {
                     posY={490}
                     name={'bonnie'}
                     isControlled={control === 'bonnie'}
-                    selectCharacter={()=>setControl('bonnie')}
+                    selectCharacter={()=>{setControl('bonnie')}}
                 />
                 <Character 
                     canvas={canvasRef}
@@ -85,7 +89,10 @@ const OfficeCanvas = () => {
                     posY={310}
                     name={'saf'}
                     isControlled={control === 'saf'}
-                    selectCharacter={()=>setControl('saf')}
+                    selectCharacter={()=>{
+                        setControl('saf')
+                        setDrawerOpen((open)=>!open)
+                    }}
                 />
             </OfficeHitMapContext.Provider>
         </Container>
