@@ -9,6 +9,9 @@ const RECEPTION_SPRITE  = 'sprites/office/reception.png'
 const COUCH_SPRITE  = 'sprites/office/couch.png'
 const VENDO_SPRITE  = 'sprites/office/vendo-machine.png'
 const GLASS_WINDOW_SPRITE  = 'sprites/office/glass-window.png'
+const SINK_SPRITE  = 'sprites/office/sink.png'
+const SOFA_L_SPRITE  = 'sprites/office/sofa_l.png'
+const SOFA_R_SPRITE  = 'sprites/office/sofa_r.png'
 
 const OfficeDecorations = ({decors, canvasRef}) => {
     const decorations = Object.keys(decors);
@@ -19,7 +22,10 @@ const OfficeDecorations = ({decors, canvasRef}) => {
         couches: COUCH_SPRITE,
         receptions: RECEPTION_SPRITE,
         vendos: VENDO_SPRITE,
-        windows: GLASS_WINDOW_SPRITE
+        windows: GLASS_WINDOW_SPRITE,
+        sinks: SINK_SPRITE,
+        leftSofas: SOFA_L_SPRITE,
+        rightSofas: SOFA_R_SPRITE,
     }
 
     return (
@@ -40,6 +46,7 @@ const OfficeDecorations = ({decors, canvasRef}) => {
                                 height={item.height}
                                 collision={item.collision}
                                 border={item.border}
+                                zIndex={item.zIndex}
                             />
                         )
                     })

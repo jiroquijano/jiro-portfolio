@@ -43,14 +43,14 @@ const OfficeCanvas = ({setDrawerOpen}) => {
     },[]);
 
     const decors = {
-        boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: false}],
+        boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: true}],
         sideWalls: [
             {posX: 214, posY: 120, width: 25, height: 65, collision: false},
-            {posX: 214, posY: 300, width: 25, height: 65, collision: false},
-            {posX: 632, posY: 158, width: 25, height: 142, collision: true},
+            {posX: 214, posY: 330, width: 25, height: 65, collision: false},
+            {posX: 632, posY: 126, width: 25, height: 175, collision: true},
         ],
         walls: [
-            {posX: 0, posY: 360, width: 235, height: 100, collision: true, border:'2px #3a3a4f solid'},
+            {posX: 0, posY: 390, width: 235, height: 100, collision: true, border:'2px #3a3a4f solid'},
             {posX: 0, posY: 180, width: 235, height: 100, collision: true, border:'2px #3a3a4f solid'},
             {posX: 632, posY: 298, width: 357, height: 100, collision: true, border:'2px #3a3a4f solid'},
         ],
@@ -63,6 +63,17 @@ const OfficeCanvas = ({setDrawerOpen}) => {
         windows: [
             {posX: 250, posY: 10, width: 180, height: 67, collision: false},
             {posX: 450, posY: 10, width: 180, height: 67, collision: false}
+        ],
+        sinks: [
+            {posX: 705, posY: 24, width: 100, height: 85, collision: true, zIndex: 1}
+        ],
+        leftSofas: [
+            {posX: 655, posY: 200, width: 54, height: 100, collision: true},
+            {posX: 824, posY: 200, width: 54, height: 100, collision: true},
+        ],
+        rightSofas: [
+            {posX: 770, posY: 200, width: 54, height: 100, collision: true},
+            {posX: 939, posY: 200, width: 54, height: 100, collision: true},
         ]
     }
 

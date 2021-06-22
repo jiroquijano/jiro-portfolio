@@ -21,6 +21,12 @@ const useStyles = makeStyles({
         height: `${SPRITE_DIMENSION}px`,
         width: `${SPRITE_DIMENSION}px`,
         zIndex: props.positionY
+    }),
+    popper: (props)=>({
+        zIndex: 777,
+        borderRadius: '5px',
+        padding: '3px',
+        background: 'white'
     })
 });
 
@@ -32,6 +38,7 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
     const characterRef = useRef(null);
     const {hitMap} = useContext(OfficeHitMapContext);
     const [isPopperOpen, setPopperOpen] = useState(false);
+    const [interactiveItems, setInteractiveItems] = useState([]);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
     const hitMapX = Math.floor((positionX+20)/10);
     const hitMapY = Math.floor((positionY)/10);
@@ -74,7 +81,9 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
         //idle character sprite on key up
         setDirection(300);
         setStep(1);
-        checkInteractiveObjects();
+        if(checkInteractiveObjects()) {
+            setPopperOpen(true);
+        }
     });
 
     const checkInteractiveObjects = () => {
@@ -88,7 +97,8 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
         const filteredItems = allUniqueItems.filter((item)=>{
             return String(item).includes('_X');
         })
-        console.log('items: ', filteredItems);
+        setInteractiveItems(filteredItems);
+        return filteredItems.length > 0;
     }
 
     const isWithinCanvas = (newX, newY) => {
@@ -99,7 +109,7 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
 
     const doesHitMapAllowMovement = (newHitMapX, newHitMapY, direction) => {
         let collisionMap = [];
-        const spriteBodyMiddleHitMap = newHitMapY+Math.ceil(hitMapSpriteHeight/1.5);
+        const spriteBodyMiddleHitMap = newHitMapY+Math.ceil(hitMapSpriteHeight/1.7);
         const spriteBodyWidthHitMapEnd = newHitMapX+hitMapSpriteWidth-2;
         if(['up','down'].includes(direction)){
             collisionMap = hitMap[spriteBodyMiddleHitMap].slice(newHitMapX+1,spriteBodyWidthHitMapEnd);
@@ -112,6 +122,7 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
     }
 
     const moveCharacter = (movement) => {
+        setPopperOpen(false);
         switch (movement) {
             case 'up' : {
                 setY((previousY) => {
@@ -158,9 +169,16 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
                 anchorEl={characterRef.current}
                 open={isPopperOpen}
                 placement='top'
+                className={classes.popper}
             >
-                <div style={{color: 'black'}}>
-                    {`${name}`}
+                <div>
+                {
+                    interactiveItems.map((item, index)=>{
+                        return <div className={classes.popperItem} key={index}>
+                            {`${item}`}
+                        </div>
+                    })
+                }
                 </div>
             </Popper>
         </>
