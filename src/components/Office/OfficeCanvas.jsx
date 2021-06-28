@@ -3,6 +3,7 @@ import {Container, makeStyles} from '@material-ui/core';
 import Character from './Character';
 
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
+import OfficeBoundaryContext from '../../context/OfficeBoundaryContext';
 import OfficeDecorations from './OfficeDecorations';
 const JIRO_SPRITE = 'sprites/jiro-sprite.png'
 const BONNA_SPRITE = 'sprites/bonna-sprite.png'
@@ -28,6 +29,7 @@ const OfficeCanvas = ({setDrawerOpen}) => {
     const canvasRef = useRef(null);
     const [control, setControl] = useState('saf');
     const [hitMap, setHitMap] = useState([]);
+    const [boundaries, setBoundaries] = useState({});
 
     const calculateHitMap = () => {
         const boxesX =  Math.floor(canvasRef?.current?.offsetWidth/10);
@@ -40,6 +42,7 @@ const OfficeCanvas = ({setDrawerOpen}) => {
 
     useEffect(()=>{
         calculateHitMap();
+        setBoundaries(officeBoundaries);
     },[]);
 
     const decors = {
@@ -77,9 +80,37 @@ const OfficeCanvas = ({setDrawerOpen}) => {
         ]
     }
 
+    const officeBoundaries = {
+        projectRoom: {
+            xLeft: 0,
+            xRight: 180,
+            yUp: 0,
+            yDown: 180
+        },
+        contactRoom: {
+            xLeft: 0,
+            xRight: 180,
+            yUp: 180,
+            yDown: 380
+        },
+        historyRoom: {
+            xLeft: 0,
+            xRight: 180,
+            yUp: 390,
+            yDown: 500
+        },
+        pantry: {
+            xLeft: 610,
+            xRight: 920,
+            yUp: 0,
+            yDown: 220
+        }
+    }
+
     return (
         <Container ref={canvasRef} className={classes.canvas}>
             <OfficeHitMapContext.Provider value={{hitMap, setHitMap}}>
+            <OfficeBoundaryContext.Provider value={{boundaries, setBoundaries}}>
                 <OfficeDecorations
                     canvasRef={canvasRef}
                     decors={decors}
@@ -105,6 +136,7 @@ const OfficeCanvas = ({setDrawerOpen}) => {
                         setDrawerOpen((open)=>!open)
                     }}
                 />
+            </OfficeBoundaryContext.Provider>
             </OfficeHitMapContext.Provider>
         </Container>
     )

@@ -2,8 +2,8 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 import {makeStyles, Popper} from '@material-ui/core';
 import useKeyPress from '../../hooks/useKeyPress';
 import useKeyRelease from '../../hooks/useKeyRelease';
-import useResize from '../../hooks/useResize';
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
+import OfficeBoundaryContext from '../../context/OfficeBoundaryContext';
 
 const STEP = 10;
 const SPRITE_STEP_MAX = 3;
@@ -30,13 +30,14 @@ const useStyles = makeStyles({
     })
 });
 
-const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharacter}) => {
+const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const [direction, setDirection] = useState(300);
     const [step, setStep] = useState(1);
     const characterRef = useRef(null);
     const {hitMap} = useContext(OfficeHitMapContext);
+    const {boundaries} = useContext(OfficeBoundaryContext);
     const [isPopperOpen, setPopperOpen] = useState(false);
     const [interactiveItems, setInteractiveItems] = useState([]);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
@@ -78,12 +79,18 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
     useKeyPress(handleKeyPress);
 
     useKeyRelease(()=>{ 
+        if(!isControlled) return;
         //idle character sprite on key up
         setDirection(300);
         setStep(1);
         if(checkInteractiveObjects()) {
             setPopperOpen(true);
         }
+        console.log(`JIRO POSITION: ${positionX},${positionY}`)
+        console.log('JIRO IS IN PROJECT ROOM: ', isWithinBoundary(boundaries.projectRoom))
+        console.log('JIRO IS IN CONTACT ROOM: ', isWithinBoundary(boundaries.contactRoom))
+        console.log('JIRO IS IN HISTORY ROOM: ', isWithinBoundary(boundaries.historyRoom))
+        console.log('JIRO IS IN PANTRY: ', isWithinBoundary(boundaries.pantry))
     });
 
     const checkInteractiveObjects = () => {
@@ -105,6 +112,12 @@ const Character = ({canvas, sprite, posX, posY, name, isControlled, selectCharac
         const canvasWidth = canvas.current.offsetWidth;
         const canvasHeight = canvas.current.offsetHeight;
         return (newX > -20 && newX < canvasWidth - 80) && (newY > 0 && newY < canvasHeight - 100);
+    }
+
+    const isWithinBoundary = ({xRight, xLeft, yUp, yDown}) => {
+        const xInRange = positionX+10 >= xLeft && positionX+10 <= xRight;
+        const yInRange = positionY > yUp && positionY < yDown;
+        return xInRange && yInRange;
     }
 
     const doesHitMapAllowMovement = (newHitMapX, newHitMapY, direction) => {
