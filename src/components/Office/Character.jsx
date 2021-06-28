@@ -30,11 +30,12 @@ const useStyles = makeStyles({
     })
 });
 
-const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) => {
+const Character = ({canvas, sprite, posX, posY, isControlled, setDrawerOpen, selectCharacter}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const [direction, setDirection] = useState(300);
     const [step, setStep] = useState(1);
+    const [characterLocation, setCharacterLocation] = useState('');
     const characterRef = useRef(null);
     const {hitMap} = useContext(OfficeHitMapContext);
     const {boundaries} = useContext(OfficeBoundaryContext);
@@ -76,6 +77,12 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         realignPosition();
     },[canvas]);
 
+    useEffect(()=> {
+        console.log('Character is in: ', characterLocation);
+        const drawerState = ['projects', 'contacts', 'history'].includes(characterLocation);
+        setDrawerOpen(drawerState);
+    },[characterLocation])
+
     useKeyPress(handleKeyPress);
 
     useKeyRelease(()=>{ 
@@ -83,15 +90,14 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         //idle character sprite on key up
         setDirection(300);
         setStep(1);
-        if(checkInteractiveObjects()) {
-            setPopperOpen(true);
-        }
-        console.log(`JIRO POSITION: ${positionX},${positionY}`)
-        console.log('JIRO IS IN PROJECT ROOM: ', isWithinBoundary(boundaries.projectRoom))
-        console.log('JIRO IS IN CONTACT ROOM: ', isWithinBoundary(boundaries.contactRoom))
-        console.log('JIRO IS IN HISTORY ROOM: ', isWithinBoundary(boundaries.historyRoom))
-        console.log('JIRO IS IN PANTRY: ', isWithinBoundary(boundaries.pantry))
+        if(checkInteractiveObjects()) setPopperOpen(true);
+        checkCharacterLocation();
     });
+
+    const checkCharacterLocation = () => {
+        const location = Object.keys(boundaries).filter((location)=>isWithinBoundary(boundaries[location]))
+        if(characterLocation !== location[0]) setCharacterLocation(location[0]);
+    }
 
     const checkInteractiveObjects = () => {
         const spriteBodyHeightHitMapEnd = hitMapY+hitMapSpriteHeight;
@@ -174,7 +180,7 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
             }
         }
     }
-    
+
     return (
         <>
             <div ref={characterRef} className={classes.character} onClick={selectCharacter}/>

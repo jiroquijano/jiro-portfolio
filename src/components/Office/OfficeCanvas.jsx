@@ -81,19 +81,19 @@ const OfficeCanvas = ({setDrawerOpen}) => {
     }
 
     const officeBoundaries = {
-        projectRoom: {
+        projects: {
             xLeft: 0,
             xRight: 180,
             yUp: 0,
             yDown: 180
         },
-        contactRoom: {
+        contacts: {
             xLeft: 0,
             xRight: 180,
             yUp: 180,
             yDown: 380
         },
-        historyRoom: {
+        history: {
             xLeft: 0,
             xRight: 180,
             yUp: 390,
@@ -123,6 +123,7 @@ const OfficeCanvas = ({setDrawerOpen}) => {
                     name={'bonnie'}
                     isControlled={control === 'bonnie'}
                     selectCharacter={()=>{setControl('bonnie')}}
+                    setDrawerOpen={setDrawerOpen}
                 />
                 <Character 
                     canvas={canvasRef}
@@ -131,10 +132,8 @@ const OfficeCanvas = ({setDrawerOpen}) => {
                     posY={310}
                     name={'saf'}
                     isControlled={control === 'saf'}
-                    selectCharacter={()=>{
-                        setControl('saf')
-                        setDrawerOpen((open)=>!open)
-                    }}
+                    selectCharacter={()=>{setControl('saf')}}
+                    setDrawerOpen={setDrawerOpen}
                 />
             </OfficeBoundaryContext.Provider>
             </OfficeHitMapContext.Provider>
