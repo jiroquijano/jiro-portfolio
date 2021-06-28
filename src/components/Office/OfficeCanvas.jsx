@@ -46,7 +46,7 @@ const OfficeCanvas = ({setDrawerOpen}) => {
     },[]);
 
     const decors = {
-        boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: true}],
+        boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: false}],
         sideWalls: [
             {posX: 214, posY: 120, width: 25, height: 65, collision: false},
             {posX: 214, posY: 330, width: 25, height: 65, collision: false},
@@ -77,6 +77,11 @@ const OfficeCanvas = ({setDrawerOpen}) => {
         rightSofas: [
             {posX: 770, posY: 200, width: 54, height: 100, collision: true},
             {posX: 939, posY: 200, width: 54, height: 100, collision: true},
+        ],
+        tables: [
+            {posX: 60, posY: 120, width: 102, height: 80, collision: true},
+            {posX: 10, posY: 335, width: 102, height: 80, collision: true},
+            {posX: 107, posY: 335, width: 102, height: 80, collision: true},
         ]
     }
 

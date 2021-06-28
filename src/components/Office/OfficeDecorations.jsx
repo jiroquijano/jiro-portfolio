@@ -12,6 +12,7 @@ const GLASS_WINDOW_SPRITE  = 'sprites/office/glass-window.png'
 const SINK_SPRITE  = 'sprites/office/sink.png'
 const SOFA_L_SPRITE  = 'sprites/office/sofa_l.png'
 const SOFA_R_SPRITE  = 'sprites/office/sofa_r.png'
+const TABLE_SPRITE = 'sprites/office/table.png'
 
 const OfficeDecorations = ({decors, canvasRef}) => {
     const decorations = Object.keys(decors);
@@ -26,6 +27,7 @@ const OfficeDecorations = ({decors, canvasRef}) => {
         sinks: SINK_SPRITE,
         leftSofas: SOFA_L_SPRITE,
         rightSofas: SOFA_R_SPRITE,
+        tables: TABLE_SPRITE
     }
 
     return (
