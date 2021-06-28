@@ -13,6 +13,9 @@ const SINK_SPRITE  = 'sprites/office/sink.png'
 const SOFA_L_SPRITE  = 'sprites/office/sofa_l.png'
 const SOFA_R_SPRITE  = 'sprites/office/sofa_r.png'
 const TABLE_SPRITE = 'sprites/office/table.png'
+const BACK_CHAIR_SPRITE = 'sprites/office/chair-back.png'
+const LAPTOP_L_SPRITE = 'sprites/office/laptop-left.png'
+const LAPTOP_F_SPRITE = 'sprites/office/laptop-front.png'
 
 const OfficeDecorations = ({decors, canvasRef}) => {
     const decorations = Object.keys(decors);
@@ -27,7 +30,10 @@ const OfficeDecorations = ({decors, canvasRef}) => {
         sinks: SINK_SPRITE,
         leftSofas: SOFA_L_SPRITE,
         rightSofas: SOFA_R_SPRITE,
-        tables: TABLE_SPRITE
+        tables: TABLE_SPRITE,
+        backChairs: BACK_CHAIR_SPRITE,
+        leftLaptops: LAPTOP_L_SPRITE,
+        frontLaptops: LAPTOP_F_SPRITE,
     }
 
     return (
