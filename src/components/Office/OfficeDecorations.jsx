@@ -17,6 +17,13 @@ const TABLE_SPRITE = 'sprites/office/table.png'
 const BACK_CHAIR_SPRITE = 'sprites/office/chair-back.png'
 const LAPTOP_L_SPRITE = 'sprites/office/laptop-left.png'
 const LAPTOP_F_SPRITE = 'sprites/office/laptop-front.png'
+const PLANT_1_SPRITE = 'sprites/office/plant1.png'
+const PLANT_2_SPRITE = 'sprites/office/plant2.png'
+const INFO_STAND_SPRITE = 'sprites/office/infostand.png'
+const RAILS_SPRITE = 'sprites/office/rails.png'
+const DIVIDER_SPRITE = 'sprites/office/divider.png'
+const PAINTING_1_SPRITE = 'sprites/office/painting1.png'
+const CERTIFICATE_SPRITE = 'sprites/office/certificate.png'
 
 const OfficeDecorations = ({decors, canvasRef}) => {
     const decorations = Object.keys(decors);
@@ -36,6 +43,13 @@ const OfficeDecorations = ({decors, canvasRef}) => {
         leftLaptops: LAPTOP_L_SPRITE,
         frontLaptops: LAPTOP_F_SPRITE,
         emptyBoards: EMPTY_BOARD_SPRITE,
+        plant1s: PLANT_1_SPRITE,
+        plant2s: PLANT_2_SPRITE,
+        infoStands: INFO_STAND_SPRITE,
+        rails: RAILS_SPRITE,
+        dividers: DIVIDER_SPRITE,
+        painting1s: PAINTING_1_SPRITE,
+        certificates: CERTIFICATE_SPRITE
     }
 
     return (

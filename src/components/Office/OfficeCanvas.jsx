@@ -5,6 +5,8 @@ import Character from './Character';
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
 import OfficeBoundaryContext from '../../context/OfficeBoundaryContext';
 import OfficeDecorations from './OfficeDecorations';
+import officeDecorConfiguration from './Decorations/configurations/officeItemsConfig';
+import officeBoundaries from './Decorations/configurations/officeBoundaries';
 const JIRO_SPRITE = 'sprites/jiro-sprite.png'
 const BONNA_SPRITE = 'sprites/bonna-sprite.png'
 
@@ -42,102 +44,13 @@ const OfficeCanvas = ({setDrawerOpen}) => {
         setBoundaries(officeBoundaries);
     },[]);
 
-    const decors = {
-        boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: false}],
-        emptyBoards: [{posX: 345, posY: 166, width: 126, height: 100, collision: false, zIndex: 167}],
-        sideWalls: [
-            {posX: 214, posY: 120, width: 25, height: 65, collision: false},
-            {posX: 214, posY: 330, width: 25, height: 65, collision: false},
-            {posX: 632, posY: 126, width: 25, height: 175, collision: true},
-        ],
-        walls: [
-            {posX: 0, posY: 390, width: 235, height: 100, collision: true, border:'2px #3a3a4f solid'},
-            {posX: 0, posY: 180, width: 235, height: 100, collision: true, border:'2px #3a3a4f solid'},
-            {posX: 632, posY: 298, width: 357, height: 100, collision: true, border:'2px #3a3a4f solid'},
-        ],
-        couches: [
-            {posX: 743, posY: 348, width: 180, height: 107, collision: true}
-        ],
-        receptions: [
-            {posX: 480, posY: 380, width: 200, height: 120, collision: true}
-        ],
-        vendos: [
-            {posX: 900, posY: 0, width: 89, height: 120, collision: true},
-            {posX: 810, posY: 0, width: 89, height: 120, collision: true}
-        ],
-        windows: [
-            {posX: 250, posY: 10, width: 180, height: 67, collision: false},
-            {posX: 450, posY: 10, width: 180, height: 67, collision: false}
-        ],
-        sinks: [
-            {posX: 705, posY: 24, width: 100, height: 85, collision: true, zIndex: 1}
-        ],
-        leftSofas: [
-            {posX: 655, posY: 200, width: 54, height: 100, collision: true},
-            {posX: 824, posY: 200, width: 54, height: 100, collision: true},
-        ],
-        rightSofas: [
-            {posX: 770, posY: 200, width: 54, height: 100, collision: true},
-            {posX: 939, posY: 200, width: 54, height: 100, collision: true},
-        ],
-        tables: [
-            {posX: 60, posY: 120, width: 102, height: 80, collision: true},
-            {posX: 10, posY: 330, width: 102, height: 80, collision: true},
-            {posX: 107, posY: 330, width: 102, height: 80, collision: true},
-            {posX: 330, posY: 260, width: 102, height: 80, collision: true},
-            {posX: 330, posY: 166, width: 102, height: 80, collision: true},
-            {posX: 429, posY: 260, width: 102, height: 80, collision: true},
-            {posX: 429, posY: 166, width: 102, height: 80, collision: true},
-        ],
-        backChairs: [
-            {posX: 130, posY: 340, width: 55, height: 75, collision: true},
-            {posX: 30, posY: 340, width: 55, height: 75, collision: true},
-            {posX: 350, posY: 275, width: 55, height: 75, collision: true},
-            {posX: 460, posY: 175, width: 55, height: 75, collision: true},
-        ],
-        leftLaptops: [
-            {posX: 18, posY: 315, width: 30, height: 50, collision: false, zIndex: 330},
-        ],
-        frontLaptops: [
-            {posX: 165, posY: 320, width: 30, height: 39, collision: false, zIndex: 330},
-            {posX: 115, posY: 115, width: 30, height: 39, collision: false, zIndex: 330}
-        ]
-    }
-
-    const officeBoundaries = {
-        projects: {
-            xLeft: 0,
-            xRight: 180,
-            yUp: 0,
-            yDown: 180
-        },
-        contacts: {
-            xLeft: 0,
-            xRight: 180,
-            yUp: 180,
-            yDown: 380
-        },
-        history: {
-            xLeft: 0,
-            xRight: 180,
-            yUp: 390,
-            yDown: 500
-        },
-        pantry: {
-            xLeft: 610,
-            xRight: 920,
-            yUp: 0,
-            yDown: 220
-        }
-    }
-
     return (
         <Container ref={canvasRef} className={classes.canvas}>
             <OfficeHitMapContext.Provider value={{hitMap, setHitMap}}>
             <OfficeBoundaryContext.Provider value={{boundaries, setBoundaries}}>
                 <OfficeDecorations
                     canvasRef={canvasRef}
-                    decors={decors}
+                    decors={officeDecorConfiguration}
                 />
                 <Character 
                     canvas={canvasRef}

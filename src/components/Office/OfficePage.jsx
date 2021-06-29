@@ -28,6 +28,7 @@ const useStyles = makeStyles({
 const OfficePage = () => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [text, setText] = useState('');
 
     const Content = <div className={classes.content}>CONTENT</div>;
 
