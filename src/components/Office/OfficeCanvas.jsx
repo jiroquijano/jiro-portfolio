@@ -14,11 +14,8 @@ const useStyles = makeStyles({
         background: '#FFFFFF',
         backgroundImage: 'url("sprites/office/tiles.png")',
         opacity: '1',
-        backgroundPosition: '-48px -48px',
         height: '600px',
         width: '1000px',
-        maxWidth: '1400px',
-        display: 'flex',
         border: '4px solid #565656',
         position: 'relative'
     }
@@ -47,6 +44,7 @@ const OfficeCanvas = ({setDrawerOpen}) => {
 
     const decors = {
         boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: false}],
+        emptyBoards: [{posX: 345, posY: 166, width: 126, height: 100, collision: false, zIndex: 167}],
         sideWalls: [
             {posX: 214, posY: 120, width: 25, height: 65, collision: false},
             {posX: 214, posY: 330, width: 25, height: 65, collision: false},
@@ -86,10 +84,16 @@ const OfficeCanvas = ({setDrawerOpen}) => {
             {posX: 60, posY: 120, width: 102, height: 80, collision: true},
             {posX: 10, posY: 330, width: 102, height: 80, collision: true},
             {posX: 107, posY: 330, width: 102, height: 80, collision: true},
+            {posX: 330, posY: 260, width: 102, height: 80, collision: true},
+            {posX: 330, posY: 166, width: 102, height: 80, collision: true},
+            {posX: 429, posY: 260, width: 102, height: 80, collision: true},
+            {posX: 429, posY: 166, width: 102, height: 80, collision: true},
         ],
         backChairs: [
             {posX: 130, posY: 340, width: 55, height: 75, collision: true},
             {posX: 30, posY: 340, width: 55, height: 75, collision: true},
+            {posX: 350, posY: 275, width: 55, height: 75, collision: true},
+            {posX: 460, posY: 175, width: 55, height: 75, collision: true},
         ],
         leftLaptops: [
             {posX: 18, posY: 315, width: 30, height: 50, collision: false, zIndex: 330},

@@ -5,6 +5,7 @@ const WALL_BLUE_SPRITE  = 'sprites/office/wall-blue.png'
 const WALL_WHITE_SPRITE  = 'sprites/office/wall-white.png'
 const WALL_THIN_SPRITE  = 'sprites/office/wall-thin.png'
 const BOARD_SPRITE  = 'sprites/office/board.png'
+const EMPTY_BOARD_SPRITE  = 'sprites/office/boardempty.png'
 const RECEPTION_SPRITE  = 'sprites/office/reception.png'
 const COUCH_SPRITE  = 'sprites/office/couch.png'
 const VENDO_SPRITE  = 'sprites/office/vendo-machine.png'
@@ -34,6 +35,7 @@ const OfficeDecorations = ({decors, canvasRef}) => {
         backChairs: BACK_CHAIR_SPRITE,
         leftLaptops: LAPTOP_L_SPRITE,
         frontLaptops: LAPTOP_F_SPRITE,
+        emptyBoards: EMPTY_BOARD_SPRITE,
     }
 
     return (
