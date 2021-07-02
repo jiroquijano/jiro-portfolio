@@ -80,5 +80,11 @@ export default  {
     ],
     certificates: [
         {posX: 65, posY: 425, width: 60, height: 30, collision: false}
+    ],
+    shelves: [
+        {posX: 20, posY: 238, width: 100, height: 39, collision: false, zIndex: 200}
+    ],
+    phones: [
+        {posX: 25, posY: 235, width: 40, height: 31, collision: false, zIndex: 200}
     ]
 }

@@ -24,6 +24,8 @@ const RAILS_SPRITE = 'sprites/office/rails.png'
 const DIVIDER_SPRITE = 'sprites/office/divider.png'
 const PAINTING_1_SPRITE = 'sprites/office/painting1.png'
 const CERTIFICATE_SPRITE = 'sprites/office/certificate.png'
+const SHELF_SPRITE = 'sprites/office/shelf.png'
+const PHONE_SPRITE = 'sprites/office/phone.png'
 
 const OfficeDecorations = ({decors, canvasRef}) => {
     const decorations = Object.keys(decors);
@@ -49,7 +51,9 @@ const OfficeDecorations = ({decors, canvasRef}) => {
         rails: RAILS_SPRITE,
         dividers: DIVIDER_SPRITE,
         painting1s: PAINTING_1_SPRITE,
-        certificates: CERTIFICATE_SPRITE
+        certificates: CERTIFICATE_SPRITE,
+        shelves: SHELF_SPRITE,
+        phones: PHONE_SPRITE
     }
 
     return (
