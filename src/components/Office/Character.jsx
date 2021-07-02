@@ -4,6 +4,7 @@ import useKeyPress from '../../hooks/useKeyPress';
 import useKeyRelease from '../../hooks/useKeyRelease';
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
 import OfficeBoundaryContext from '../../context/OfficeBoundaryContext';
+import OfficeDrawerContext from '../../context/OfficeDrawerContext';
 
 const STEP = 10;
 const SPRITE_STEP_MAX = 3;
@@ -30,17 +31,21 @@ const useStyles = makeStyles({
     })
 });
 
-const Character = ({canvas, sprite, posX, posY, isControlled, setDrawerOpen, selectCharacter}) => {
+const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const [direction, setDirection] = useState(300);
     const [step, setStep] = useState(1);
     const [characterLocation, setCharacterLocation] = useState('');
+    const [interactiveItems, setInteractiveItems] = useState([]);
+
     const characterRef = useRef(null);
+
     const {hitMap} = useContext(OfficeHitMapContext);
     const {boundaries} = useContext(OfficeBoundaryContext);
+    const {dispatch} = useContext(OfficeDrawerContext);
+
     const [isPopperOpen, setPopperOpen] = useState(false);
-    const [interactiveItems, setInteractiveItems] = useState([]);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
     const hitMapX = Math.floor((positionX+20)/10);
     const hitMapY = Math.floor((positionY)/10);
@@ -68,23 +73,21 @@ const Character = ({canvas, sprite, posX, posY, isControlled, setDrawerOpen, sel
         if(event.key.toLowerCase() === 'x') alert('interact');
     }
 
-    const realignPosition = () =>{
-        setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
-        setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
-    }
-
     useEffect(()=>{
+        const realignPosition = () =>{
+            setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
+            setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
+        }
         realignPosition();
-    },[canvas]);
+    },[canvas, posX, posY]);
 
     useEffect(()=> {
         console.log('Character is in: ', characterLocation);
-        const drawerState = ['projects', 'contacts', 'history'].includes(characterLocation);
-        setDrawerOpen(drawerState);
-    },[characterLocation])
+        const isCharacterInRoom = ['projects', 'contacts', 'history'].includes(characterLocation);
+        dispatch({type: `${isCharacterInRoom ? 'OPEN_DRAWER' : 'CLOSE_DRAWER'}`, room: characterLocation});
+    },[characterLocation, dispatch])
 
     useKeyPress(handleKeyPress);
-
     useKeyRelease(()=>{ 
         if(!isControlled) return;
         //idle character sprite on key up

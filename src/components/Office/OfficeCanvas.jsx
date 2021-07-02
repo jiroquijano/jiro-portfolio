@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     }
 });
 
-const OfficeCanvas = ({setDrawerOpen}) => {
+const OfficeCanvas = () => {
     const classes = useStyles();
     const canvasRef = useRef(null);
     const [control, setControl] = useState('saf');
@@ -60,7 +60,6 @@ const OfficeCanvas = ({setDrawerOpen}) => {
                     name={'bonnie'}
                     isControlled={control === 'bonnie'}
                     selectCharacter={()=>{setControl('bonnie')}}
-                    setDrawerOpen={setDrawerOpen}
                 />
                 <Character 
                     canvas={canvasRef}
@@ -70,7 +69,6 @@ const OfficeCanvas = ({setDrawerOpen}) => {
                     name={'saf'}
                     isControlled={control === 'saf'}
                     selectCharacter={()=>{setControl('saf')}}
-                    setDrawerOpen={setDrawerOpen}
                 />
             </OfficeBoundaryContext.Provider>
             </OfficeHitMapContext.Provider>
