@@ -4,7 +4,7 @@ import useKeyPress from '../../hooks/useKeyPress';
 import useKeyRelease from '../../hooks/useKeyRelease';
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
 import OfficeBoundaryContext from '../../context/OfficeBoundaryContext';
-import OfficeDrawerContext from '../../context/OfficeDrawerContext';
+import OfficePageContext from '../../context/OfficePageContext';
 
 const STEP = 10;
 const SPRITE_STEP_MAX = 3;
@@ -43,7 +43,7 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
 
     const {hitMap} = useContext(OfficeHitMapContext);
     const {boundaries} = useContext(OfficeBoundaryContext);
-    const {dispatch} = useContext(OfficeDrawerContext);
+    const {drawerDispatch} = useContext(OfficePageContext);
 
     const [isPopperOpen, setPopperOpen] = useState(false);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
@@ -84,8 +84,8 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
     useEffect(()=> {
         console.log('Character is in: ', characterLocation);
         const isCharacterInRoom = ['projects', 'contacts', 'history'].includes(characterLocation);
-        dispatch({type: `${isCharacterInRoom ? 'OPEN_DRAWER' : 'CLOSE_DRAWER'}`, room: characterLocation});
-    },[characterLocation, dispatch])
+        drawerDispatch({type: `${isCharacterInRoom ? 'OPEN_DRAWER' : 'CLOSE_DRAWER'}`, room: characterLocation});
+    },[characterLocation, drawerDispatch])
 
     useKeyPress(handleKeyPress);
     useKeyRelease(()=>{ 

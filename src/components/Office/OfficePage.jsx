@@ -1,9 +1,9 @@
 import React, {useReducer, useState} from 'react';
 import OfficeCanvas from './OfficeCanvas'
-import {Grid, makeStyles, Drawer, Modal} from '@material-ui/core';
+import {Grid, makeStyles, Drawer, Modal, useMediaQuery} from '@material-ui/core';
 import { Fade } from '@material-ui/core';
 import drawerStateReducer from '../../reducers/drawerStateReducer';
-import OfficeDrawerContext from '../../context/OfficeDrawerContext';
+import OfficePageContext from '../../context/OfficePageContext';
 
 const useStyles = makeStyles({
     root: {
@@ -28,27 +28,37 @@ const useStyles = makeStyles({
     content: {
         background: 'white'
     },
-    officePageModalContent: {
-        position: 'absolute',
-        top: '20px',
-        left: '300px',
-        width: '30vw',
+    officePageModalContentContainer: (props) => ({
+        width: props.isMobileScreen ? '90vw' : '50vw',
+        height: '70vh',
         background: 'white',
-        outline: 'none'
+        outline: 'none',
+        borderRadius: '20px',
+        boxShadow: '-5px 10px 20px #2d5884d1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '5px solid #333440'
+    }),
+    modal: {
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center'
     }
 })
 
 const OfficePage = () => {
-    const classes = useStyles();
-    const [drawerState, dispatch] = useReducer(drawerStateReducer, {open: false})
+    const [drawerState, drawerDispatch] = useReducer(drawerStateReducer, {open: false})
     const [modalOpen, setModalOpen] = useState(true)
+    const isMobileScreen = useMediaQuery('(max-width:768px)')
+    const classes = useStyles({isMobileScreen});
 
     const Content = <div className={classes.content}>{drawerState.room}</div>;
 
     return (
         <div className={classes.root}>
             <Fade in={true} timeout={500}>
-                <OfficeDrawerContext.Provider value={{drawerState, dispatch}}>
+                <OfficePageContext.Provider value={{drawerState, drawerDispatch}}>
                     <Grid container direction='column' alignContent='center' alignItems='stretch'>
                         <Grid container item direction='row' alignItems='center' justify='center'>
                             <Grid item>
@@ -59,26 +69,23 @@ const OfficePage = () => {
                             {/* Instructions go here */}
                         </Grid>
                     </Grid>
-                </OfficeDrawerContext.Provider>
+                </OfficePageContext.Provider>
             </Fade>
             <Drawer open={drawerState.open} variant='persistent' anchor='right' classes={{ paper: classes.transparentPaper }}/>
             <Drawer open={drawerState.open} variant='persistent' anchor='right' classes={{ paper: classes.paperContainer }}>
                 <div children={Content}/>
             </Drawer>
-
             <Modal 
                 open={modalOpen}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
+                className={classes.modal}
             >
-                <div 
-                    className={classes.officePageModalContent}
-                    onClick = {()=>setModalOpen(!modalOpen)}
-                >
-                    HELLO
+                <div className={classes.officePageModalContentContainer} onClick = {()=>setModalOpen(!modalOpen)}>
+                    //Welcome message / choose character modal
                 </div>
             </Modal>
-            
+
         </div>
     )
 }
