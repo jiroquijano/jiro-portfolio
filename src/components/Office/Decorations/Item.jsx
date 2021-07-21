@@ -26,17 +26,23 @@ const Item = ({canvas, type, id, spriteImage, posX, posY, width, height, collisi
     const hitMapSpriteWidth = Math.floor(itemRef?.current?.offsetWidth/10);
     const hitMapSpriteHeight = Math.floor(itemRef?.current?.offsetHeight/10);
 
-    const realignPosition = () =>{
+    const realignPosition = () => {
         setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
         setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
     }
 
+    const constructItemHitMapEntry = () => {
+        let itemHitMapEntry = `${type}_${id}`;
+        itemHitMapEntry += `${collision ? '_X' : '_A'}`
+        return itemHitMapEntry;
+    }
+
     const updateHitMap = () =>{
-        //HitMap item identity is <item_type>_<item_type_number>_<attributes>
+        //HitMap item identity is <item_type>_<item_type_number>_<collision>
         const hitMapCopy = hitMap;
         for(let currentRow = hitMapY; currentRow < hitMapY + hitMapSpriteHeight; currentRow++) {
             const itemHitMapRow = hitMap[currentRow];
-            itemHitMapRow.fill(`${collision ? `${type}_${id}_X` : `${type}_${id}_A`}`, hitMapX, hitMapX + hitMapSpriteWidth + 1);
+            itemHitMapRow.fill(constructItemHitMapEntry(), hitMapX, hitMapX + hitMapSpriteWidth + 1);
             hitMapCopy[currentRow] = itemHitMapRow;
         }
         setHitMap(hitMapCopy);

@@ -43,7 +43,7 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
 
     const {hitMap} = useContext(OfficeHitMapContext);
     const {boundaries} = useContext(OfficeBoundaryContext);
-    const {drawerDispatch} = useContext(OfficePageContext);
+    const {drawerDispatch, welcomeModalOpen} = useContext(OfficePageContext);
 
     const [isPopperOpen, setPopperOpen] = useState(false);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
@@ -59,8 +59,14 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         down: 3
     }
 
+    const realignPosition = () =>{
+        setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
+        setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
+    }
+
     const handleKeyPress = (event) => {
-        if(event.key.includes('Arrow') && isControlled) {
+        if(welcomeModalOpen || !isControlled) return;
+        if(event.key.includes('Arrow')) {
             const movement = event.key.replace('Arrow','').toLowerCase();
             setDirection(directionMap[movement] * SPRITE_DIMENSION);
             setStep((prevStep) => {
@@ -68,18 +74,15 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
                 return currentStep;
             })
             moveCharacter(movement);
+            checkCharacterLocation();
             event.preventDefault();
         }
-        if(event.key.toLowerCase() === 'x') alert('interact');
+        if(event.code.toLowerCase() === 'space') alert('interact');
     }
 
     useEffect(()=>{
-        const realignPosition = () =>{
-            setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
-            setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
-        }
         realignPosition();
-    },[canvas, posX, posY]);
+    },[canvas]);
 
     useEffect(()=> {
         console.log('Character is in: ', characterLocation);
@@ -88,13 +91,12 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
     },[characterLocation, drawerDispatch])
 
     useKeyPress(handleKeyPress);
+
     useKeyRelease(()=>{ 
         if(!isControlled) return;
-        //idle character sprite on key up
-        setDirection(300);
-        setStep(1);
+        setDirection(300); //idle character sprite direction
+        setStep(1); //idle character sprite step
         if(checkInteractiveObjects()) setPopperOpen(true);
-        checkCharacterLocation();
     });
 
     const checkCharacterLocation = () => {
@@ -110,9 +112,7 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         const westItems = hitMap[hitMapY+Math.ceil(hitMapSpriteHeight/2)].slice(hitMapX-2,hitMapX-1);
         const eastItems = hitMap[hitMapY+Math.ceil(hitMapSpriteHeight/2)].slice(spriteBodyWidthHitMapLength+2, spriteBodyWidthHitMapLength+3);
         const allUniqueItems = Array.from(new Set([...northItems, ...southItems, ...westItems, ...eastItems]));
-        const filteredItems = allUniqueItems.filter((item)=>{
-            return String(item).includes('_X');
-        })
+        const filteredItems = allUniqueItems.filter((item) => String(item).includes('_A'))
         setInteractiveItems(filteredItems);
         return filteredItems.length > 0;
     }
@@ -134,7 +134,7 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         const spriteBodyMiddleHitMap = newHitMapY+Math.ceil(hitMapSpriteHeight/1.7);
         const spriteBodyWidthHitMapEnd = newHitMapX+hitMapSpriteWidth-2;
         if(['up','down'].includes(direction)){
-            collisionMap = hitMap[spriteBodyMiddleHitMap].slice(newHitMapX+1,spriteBodyWidthHitMapEnd);
+            collisionMap = hitMap[spriteBodyMiddleHitMap].slice(newHitMapX,spriteBodyWidthHitMapEnd);
         } else if(['left', 'right'].includes(direction)){
             const xToCheck = direction === 'left' ? newHitMapX : spriteBodyWidthHitMapEnd;
             collisionMap.push(hitMap[spriteBodyMiddleHitMap][xToCheck]);

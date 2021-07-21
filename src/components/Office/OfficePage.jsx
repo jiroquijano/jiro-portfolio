@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useReducer, useState, useRef, useEffect} from 'react';
 import OfficeCanvas from './OfficeCanvas'
 import {Grid, makeStyles, Drawer, Modal, useMediaQuery} from '@material-ui/core';
 import { Fade } from '@material-ui/core';
@@ -14,16 +14,19 @@ const useStyles = makeStyles({
         overflow: 'hidden'
     },
     transparentPaper: {
-        width: '60vw',
+        width: '67vw',
         opacity: .7,
         background: '#6a88a2',
         boxShadow: '-5px 2px 20px #3c5c67'
     },
     paperContainer: {
-        width: '55vw',
+        width: '62vw',
         background: 'white',
         boxShadow: '-20px 0px 15px #0000000f',
-        justifyContent: 'center'
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     content: {
         background: 'white'
@@ -58,9 +61,9 @@ const OfficePage = () => {
     return (
         <div className={classes.root}>
             <Fade in={true} timeout={500}>
-                <OfficePageContext.Provider value={{drawerState, drawerDispatch}}>
-                    <Grid container direction='column' alignContent='center' alignItems='stretch'>
-                        <Grid container item direction='row' alignItems='center' justify='center'>
+                <OfficePageContext.Provider value={{drawerState, drawerDispatch, welcomeModalOpen: modalOpen}}>
+                    <Grid container direction='column'>
+                        <Grid container item direction='row' justify='center'>
                             <Grid item>
                                 <OfficeCanvas/>
                             </Grid>
@@ -71,10 +74,12 @@ const OfficePage = () => {
                     </Grid>
                 </OfficePageContext.Provider>
             </Fade>
+
             <Drawer open={drawerState.open} variant='persistent' anchor='right' classes={{ paper: classes.transparentPaper }}/>
             <Drawer open={drawerState.open} variant='persistent' anchor='right' classes={{ paper: classes.paperContainer }}>
                 <div children={Content}/>
             </Drawer>
+
             <Modal 
                 open={modalOpen}
                 aria-labelledby="simple-modal-title"
