@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 const OfficeCanvas = () => {
     const classes = useStyles();
     const canvasRef = useRef(null);
-    const [control, setControl] = useState('saf');
+    const [control, setControl] = useState('jiro');
     const [hitMap, setHitMap] = useState([]);
     const [boundaries, setBoundaries] = useState({});
 
@@ -37,6 +37,10 @@ const OfficeCanvas = () => {
             return Array.from(Array(boxesX)).map(()=>0);
         });
         setHitMap(hitMapArray);
+    }
+
+    const checkIfCharacterIsControlled = (name) => {
+        return name === control;
     }
 
     useEffect(()=>{
@@ -55,20 +59,20 @@ const OfficeCanvas = () => {
                 <Character 
                     canvas={canvasRef}
                     sprite={BONNA_SPRITE}
-                    posX={890}
-                    posY={490}
-                    name={'bonnie'}
-                    isControlled={control === 'bonnie'}
-                    selectCharacter={()=>{setControl('bonnie')}}
+                    posX={740}
+                    posY={40}
+                    name='bonna'
+                    checkControlled={checkIfCharacterIsControlled}
+                    selectCharacter={setControl}
                 />
                 <Character 
                     canvas={canvasRef}
                     sprite={JIRO_SPRITE}
                     posX={530}
                     posY={310}
-                    name={'saf'}
-                    isControlled={control === 'saf'}
-                    selectCharacter={()=>{setControl('saf')}}
+                    name='jiro'
+                    checkControlled={checkIfCharacterIsControlled}
+                    selectCharacter={setControl}
                 />
             </OfficeBoundaryContext.Provider>
             </OfficeHitMapContext.Provider>

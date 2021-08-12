@@ -1,4 +1,4 @@
-export default  {
+const officeItemPositions =  {
     boards: [{posX: 50, posY: 0, width: 126, height: 100, collision: false}],
     emptyBoards: [{posX: 345, posY: 166, width: 126, height: 100, collision: false, zIndex: 167}],
     sideWalls: [
@@ -88,3 +88,5 @@ export default  {
         {posX: 25, posY: 235, width: 40, height: 31, collision: false, zIndex: 200}
     ]
 }
+
+export default officeItemPositions;

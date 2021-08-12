@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     })
 });
 
-const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) => {
+const Character = ({canvas, name, sprite, posX, posY, checkControlled, selectCharacter}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const [direction, setDirection] = useState(300);
@@ -59,13 +59,8 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         down: 3
     }
 
-    const realignPosition = () =>{
-        setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
-        setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
-    }
-
     const handleKeyPress = (event) => {
-        if(welcomeModalOpen || !isControlled) return;
+        if(welcomeModalOpen || !checkControlled(name)) return;
         if(event.key.includes('Arrow')) {
             const movement = event.key.replace('Arrow','').toLowerCase();
             setDirection(directionMap[movement] * SPRITE_DIMENSION);
@@ -80,9 +75,21 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         if(event.code.toLowerCase() === 'space') alert('interact');
     }
 
+    useKeyPress(handleKeyPress);
+    useKeyRelease(()=>{ 
+        if(!checkControlled(name)) return;
+        setDirection(300); //idle character sprite direction
+        setStep(1); //idle character sprite step
+        if(checkInteractiveObjects()) setPopperOpen(true);
+    });
+
     useEffect(()=>{
+        const realignPosition = () => {
+            setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
+            setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
+        }
         realignPosition();
-    },[canvas]);
+    },[canvas, posX, posY]);
 
     useEffect(()=> {
         console.log('Character is in: ', characterLocation);
@@ -90,14 +97,6 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
         drawerDispatch({type: `${isCharacterInRoom ? 'OPEN_DRAWER' : 'CLOSE_DRAWER'}`, room: characterLocation});
     },[characterLocation, drawerDispatch])
 
-    useKeyPress(handleKeyPress);
-
-    useKeyRelease(()=>{ 
-        if(!isControlled) return;
-        setDirection(300); //idle character sprite direction
-        setStep(1); //idle character sprite step
-        if(checkInteractiveObjects()) setPopperOpen(true);
-    });
 
     const checkCharacterLocation = () => {
         const location = Object.keys(boundaries).filter((location)=>isWithinBoundary(boundaries[location]))
@@ -186,7 +185,7 @@ const Character = ({canvas, sprite, posX, posY, isControlled, selectCharacter}) 
 
     return (
         <>
-            <div ref={characterRef} className={classes.character} onClick={selectCharacter}/>
+            <div ref={characterRef} className={classes.character} onClick={() => selectCharacter(name)}/>
             <Popper
                 anchorEl={characterRef.current}
                 open={isPopperOpen}

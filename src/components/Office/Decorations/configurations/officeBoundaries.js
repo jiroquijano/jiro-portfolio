@@ -1,4 +1,4 @@
-export default  {
+const officeSpaceBoundaries = {
     projects: {
         xLeft: 0,
         xRight: 180,
@@ -24,3 +24,5 @@ export default  {
         yDown: 220
     }
 }
+
+export default officeSpaceBoundaries;

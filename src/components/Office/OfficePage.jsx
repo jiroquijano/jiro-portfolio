@@ -1,9 +1,10 @@
-import React, {useReducer, useState, useRef, useEffect} from 'react';
+import React, {useReducer, useState} from 'react';
 import OfficeCanvas from './OfficeCanvas'
 import {Grid, makeStyles, Drawer, Modal, useMediaQuery} from '@material-ui/core';
 import { Fade } from '@material-ui/core';
 import drawerStateReducer from '../../reducers/drawerStateReducer';
 import OfficePageContext from '../../context/OfficePageContext';
+import VisitorWelcomePage from '../Content/VisitorWelcomePage';
 
 const useStyles = makeStyles({
     root: {
@@ -82,12 +83,10 @@ const OfficePage = () => {
 
             <Modal 
                 open={modalOpen}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
                 className={classes.modal}
             >
-                <div className={classes.officePageModalContentContainer} onClick = {()=>setModalOpen(!modalOpen)}>
-                    //Welcome message / choose character modal
+                <div className={classes.officePageModalContentContainer}>
+                    <VisitorWelcomePage handleClick={()=>setModalOpen(!modalOpen)}/>
                 </div>
             </Modal>
 
