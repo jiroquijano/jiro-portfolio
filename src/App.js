@@ -1,6 +1,6 @@
 import './App.css';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
-import OfficePage from './components/Office/OfficePage';
+import OfficePage from './components/Content/OfficePage';
 
 function App() {
   return (

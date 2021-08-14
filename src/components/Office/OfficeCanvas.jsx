@@ -7,7 +7,7 @@ import OfficeBoundaryContext from '../../context/OfficeBoundaryContext';
 import OfficeDecorations from './OfficeDecorations';
 import officeDecorConfiguration from './Decorations/configurations/officeItemsConfig';
 import officeBoundaries from './Decorations/configurations/officeBoundaries';
-const JIRO_SPRITE = 'sprites/jiro-sprite.png'
+const JIRO_SPRITE = 'sprites/jiro-sprite-formal.png'
 const BONNA_SPRITE = 'sprites/bonna-sprite.png'
 
 

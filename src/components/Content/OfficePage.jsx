@@ -1,10 +1,10 @@
 import React, {useReducer, useState} from 'react';
-import OfficeCanvas from './OfficeCanvas'
+import OfficeCanvas from '../Office/OfficeCanvas'
 import {Grid, makeStyles, Drawer, Modal, useMediaQuery} from '@material-ui/core';
 import { Fade } from '@material-ui/core';
 import drawerStateReducer from '../../reducers/drawerStateReducer';
 import OfficePageContext from '../../context/OfficePageContext';
-import VisitorWelcomePage from '../Content/VisitorWelcomePage';
+import VisitorWelcomePage from './VisitorWelcomePage';
 
 const useStyles = makeStyles({
     root: {
