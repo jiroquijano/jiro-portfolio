@@ -73,6 +73,11 @@ const OfficePage = () => {
                             {/* Instructions go here */}
                         </Grid>
                     </Grid>
+                    <Modal open={modalOpen} className={classes.modal}>
+                        <div className={classes.officePageModalContentContainer}>
+                            <VisitorWelcomePage handleClick={()=>setModalOpen(!modalOpen)}/>
+                        </div>
+                    </Modal>
                 </OfficePageContext.Provider>
             </Fade>
 
@@ -81,14 +86,6 @@ const OfficePage = () => {
                 <div children={Content}/>
             </Drawer>
 
-            <Modal 
-                open={modalOpen}
-                className={classes.modal}
-            >
-                <div className={classes.officePageModalContentContainer}>
-                    <VisitorWelcomePage handleClick={()=>setModalOpen(!modalOpen)}/>
-                </div>
-            </Modal>
 
         </div>
     )

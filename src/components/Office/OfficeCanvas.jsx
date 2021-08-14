@@ -53,7 +53,6 @@ const OfficeCanvas = () => {
             <OfficeHitMapContext.Provider value={{hitMap, setHitMap}}>
             <OfficeBoundaryContext.Provider value={{boundaries, setBoundaries}}>
                 <OfficeDecorations
-                    canvasRef={canvasRef}
                     decors={officeDecorConfiguration}
                 />
                 <Character 

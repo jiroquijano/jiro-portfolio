@@ -51,7 +51,9 @@ const VisitorWelcomePage = ({handleClick}) => {
                 <div className={classes.headerSubTitle}>may we ask who's visiting today?</div>
             </div>
 
-            <VisitorSelectionCarousel/>
+            <VisitorSelectionCarousel
+                characters = {['jiro', 'bonna', 'guest', 'robot']}
+            />
 
             <div className={classes.footer}>
                 <Button 

@@ -15,16 +15,16 @@ const useStyles = makeStyles({
     })
 })
 
-const Item = ({canvas, type, id, spriteImage, posX, posY, width, height, collision, border='', zIndex}) => {
+const Item = ({type, id, spriteImage, posX, posY, width, height, collision, border='', zIndex}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const itemRef = useRef(null);
     const {hitMap, setHitMap} = useContext(OfficeHitMapContext);
 
     useEffect(()=>{
-        setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
-        setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
-    },[setX, setY, canvas, posX, posY]);
+        setX(posX);
+        setY(posY);
+    },[posX, posY]);
 
     useEffect(()=>{
         const hitMapX = Math.floor(positionX/10);

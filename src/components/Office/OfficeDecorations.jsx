@@ -27,7 +27,7 @@ const CERTIFICATE_SPRITE = 'sprites/office/certificate.png'
 const SHELF_SPRITE = 'sprites/office/shelf.png'
 const PHONE_SPRITE = 'sprites/office/phone.png'
 
-const OfficeDecorations = ({decors, canvasRef}) => {
+const OfficeDecorations = ({decors}) => {
     const decorations = Object.keys(decors);
     const itemToSpriteMap = {
         boards: BOARD_SPRITE,
@@ -63,7 +63,7 @@ const OfficeDecorations = ({decors, canvasRef}) => {
                 decorations.map((decoration)=>{
                     return decors[decoration].map((item, index)=>{
                         return (
-                            <Item canvas={canvasRef}
+                            <Item
                                 key={index}
                                 spriteImage={itemToSpriteMap[decoration]}
                                 type={decoration}

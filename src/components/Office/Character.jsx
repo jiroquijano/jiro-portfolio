@@ -84,12 +84,9 @@ const Character = ({canvas, name, sprite, posX, posY, checkControlled, selectCha
     });
 
     useEffect(()=>{
-        const realignPosition = () => {
-            setX(canvas.current?.offsetWidth - canvas.current?.offsetWidth + posX);
-            setY(canvas.current?.offsetHeight - canvas.current?.offsetHeight + posY);
-        }
-        realignPosition();
-    },[canvas, posX, posY]);
+        setX(posX);
+        setY(posY);
+    },[posX, posY]);
 
     useEffect(()=> {
         console.log('Character is in: ', characterLocation);

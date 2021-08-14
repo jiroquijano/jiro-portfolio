@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles} from '@material-ui/core';
+import CharacterPreview from './CharacterPreview';
 
 const useStyles = makeStyles({
     root: {
@@ -14,7 +15,8 @@ const useStyles = makeStyles({
         height: '100%',
         background: 'blue',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        color: 'white'
     },
     activeCircle: {
         color: 'black',
@@ -31,17 +33,15 @@ const useStyles = makeStyles({
     }
 });
 
-const CHARACTERS = ['jiro', 'bonna', 'guest', 'robot']; //extract to a config enum
-
-const scrollThrough = (currentIndex, direction) => {
+const scrollThrough = (characters, currentIndex, direction) => {
     let resultingIndex = currentIndex;
     switch (direction) {
         case 'right': {
-            resultingIndex = currentIndex + 1 < CHARACTERS.length ? currentIndex + 1 : 0;
+            resultingIndex = currentIndex + 1 < characters.length ? currentIndex + 1 : 0;
             break;
         }
         case 'left': {
-            resultingIndex = currentIndex - 1 < 0 ? CHARACTERS.length - 1 : currentIndex - 1;
+            resultingIndex = currentIndex - 1 < 0 ? characters.length - 1 : currentIndex - 1;
             break;
         }
         default: {
@@ -51,7 +51,7 @@ const scrollThrough = (currentIndex, direction) => {
     return resultingIndex;
 }
 
-const VisitorSelectionCarousel = () => {
+const VisitorSelectionCarousel = ({characters}) => {
     const classes = useStyles();
     const [currentCharacterIndex, setCurrentCharacterIndex] = useState(0);
 
@@ -59,26 +59,29 @@ const VisitorSelectionCarousel = () => {
         <>
             <div className={classes.root}>
                 <div className={classes.button} onClick={() =>
-                    setCurrentCharacterIndex((prevIndex) => scrollThrough(prevIndex, 'left'))
+                    setCurrentCharacterIndex((prevIndex) => scrollThrough(characters, prevIndex, 'left'))
                 }>
-                    left
+                    {'<<<'}
                 </div>
-                <div>
-                    {CHARACTERS[currentCharacterIndex]}
-                </div>
+
+                <CharacterPreview characters={characters} currentIndex={currentCharacterIndex}/>
+
                 <div className={classes.button} onClick={() => 
-                    setCurrentCharacterIndex((prevIndex) => scrollThrough(prevIndex, 'right'))
+                    setCurrentCharacterIndex((prevIndex) => scrollThrough(characters, prevIndex, 'right'))
                 }>
-                    right
+                    {'>>>'}
                 </div>
             </div>
             <div className={classes.indexGuide}>
                 {
-                    CHARACTERS.map((character)=>
-                        <div className={
-                            character === CHARACTERS[currentCharacterIndex] ?
-                                classes.activeCircle : classes.inactiveCircle
-                        }> ● </div>
+                    characters.map((character)=>
+                        <div 
+                            className = {
+                                character === characters[currentCharacterIndex] ?
+                                    classes.activeCircle : classes.inactiveCircle
+                            }
+                            key = {character}
+                        > ● </div>
                     )
                 }
             </div>
