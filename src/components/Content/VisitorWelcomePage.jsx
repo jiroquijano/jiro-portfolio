@@ -52,7 +52,7 @@ const VisitorWelcomePage = ({handleClick}) => {
             </div>
 
             <VisitorSelectionCarousel
-                characters = {['jiro', 'bonna', 'guest', 'robot']}
+                characters = {['jiro', 'bonna']}
             />
 
             <div className={classes.footer}>

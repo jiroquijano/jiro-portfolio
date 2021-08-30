@@ -58,14 +58,18 @@ const VisitorSelectionCarousel = ({characters}) => {
     return (
         <>
             <div className={classes.root}>
+                {/*LEFT ARROW*/}
                 <div className={classes.button} onClick={() =>
                     setCurrentCharacterIndex((prevIndex) => scrollThrough(characters, prevIndex, 'left'))
                 }>
                     {'<<<'}
                 </div>
 
+                 {/*CHARACTER SPRITE*/}
                 <CharacterPreview characters={characters} currentIndex={currentCharacterIndex}/>
 
+                
+                {/*RIGHT ARROW*/}
                 <div className={classes.button} onClick={() => 
                     setCurrentCharacterIndex((prevIndex) => scrollThrough(characters, prevIndex, 'right'))
                 }>
@@ -74,15 +78,11 @@ const VisitorSelectionCarousel = ({characters}) => {
             </div>
             <div className={classes.indexGuide}>
                 {
-                    characters.map((character)=>
-                        <div 
-                            className = {
-                                character === characters[currentCharacterIndex] ?
-                                    classes.activeCircle : classes.inactiveCircle
-                            }
-                            key = {character}
-                        > ● </div>
-                    )
+                    characters.map((character) => {
+                        const guideClassName = character === characters[currentCharacterIndex] ?
+                            classes.activeCircle : classes.inactiveCircle;
+                        return <div key = {character} className = {guideClassName}> ● </div>
+                    })
                 }
             </div>
         </>
