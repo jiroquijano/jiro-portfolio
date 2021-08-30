@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { makeStyles, Button} from '@material-ui/core';
 import VisitorSelectionCarousel from '../VisitorSelection/VisitorSelectionCarousel';
+import OfficePageContext from '../../context/OfficePageContext';
 
 const useStyles = makeStyles ({
     root: {
@@ -41,8 +42,9 @@ const useStyles = makeStyles ({
     },
 })
 
-const VisitorWelcomePage = ({handleClick}) => {
+const VisitorWelcomePage = () => {
     const classes = useStyles();
+    const {officeDispatch} = useContext(OfficePageContext); 
 
     return (
         <div className={classes.root}>
@@ -58,7 +60,7 @@ const VisitorWelcomePage = ({handleClick}) => {
             <div className={classes.footer}>
                 <Button 
                     variant='contained' 
-                    onClick={()=>{handleClick()}}
+                    onClick={() => officeDispatch({type: 'CLOSE_WELCOME_MODAL'}) }
                     color='primary'
                 >
                     VISIT

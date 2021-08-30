@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import { makeStyles} from '@material-ui/core';
 import CharacterPreview from './CharacterPreview';
+import OfficePageContext from '../../context/OfficePageContext';
 
 const useStyles = makeStyles({
     root: {
@@ -54,14 +55,21 @@ const scrollThrough = (characters, currentIndex, direction) => {
 const VisitorSelectionCarousel = ({characters}) => {
     const classes = useStyles();
     const [currentCharacterIndex, setCurrentCharacterIndex] = useState(0);
+    const {officeDispatch} = useContext(OfficePageContext);
+
+    const handleChangeSelection = (direction) => {
+        setCurrentCharacterIndex((prevIndex) => {
+            const index = scrollThrough(characters, prevIndex, direction);
+            officeDispatch({type: 'SET_CURRENT_CHARACTER', character: characters[index]});
+            return index;
+        })
+    }
 
     return (
         <>
             <div className={classes.root}>
                 {/*LEFT ARROW*/}
-                <div className={classes.button} onClick={() =>
-                    setCurrentCharacterIndex((prevIndex) => scrollThrough(characters, prevIndex, 'left'))
-                }>
+                <div className={classes.button} onClick={() => handleChangeSelection('left') }>
                     {'<<<'}
                 </div>
 
@@ -70,12 +78,12 @@ const VisitorSelectionCarousel = ({characters}) => {
 
                 
                 {/*RIGHT ARROW*/}
-                <div className={classes.button} onClick={() => 
-                    setCurrentCharacterIndex((prevIndex) => scrollThrough(characters, prevIndex, 'right'))
-                }>
+                <div className={classes.button} onClick={() => handleChangeSelection('right') }>
                     {'>>>'}
                 </div>
             </div>
+
+            {/*INDEX INDICATOR*/}
             <div className={classes.indexGuide}>
                 {
                     characters.map((character) => {

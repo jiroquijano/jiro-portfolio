@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     })
 });
 
-const Character = ({canvas, name, sprite, posX, posY, checkControlled, selectCharacter}) => {
+const Character = ({canvas, name, sprite, posX, posY, checkControlled}) => {
     const [positionX, setX] = useState();
     const [positionY, setY] = useState();
     const [direction, setDirection] = useState(300);
@@ -43,7 +43,7 @@ const Character = ({canvas, name, sprite, posX, posY, checkControlled, selectCha
 
     const {hitMap} = useContext(OfficeHitMapContext);
     const {boundaries} = useContext(OfficeBoundaryContext);
-    const {drawerDispatch, welcomeModalOpen} = useContext(OfficePageContext);
+    const {officeDispatch, officeState} = useContext(OfficePageContext);
 
     const [isPopperOpen, setPopperOpen] = useState(false);
     const classes = useStyles({positionX, positionY, step, direction, sprite});
@@ -60,7 +60,7 @@ const Character = ({canvas, name, sprite, posX, posY, checkControlled, selectCha
     }
 
     const handleKeyPress = (event) => {
-        if(welcomeModalOpen || !checkControlled(name)) return;
+        if(officeState.welcomeModalOpen || !checkControlled(name)) return;
         if(event.key.includes('Arrow')) {
             const movement = event.key.replace('Arrow','').toLowerCase();
             setDirection(directionMap[movement] * SPRITE_DIMENSION);
@@ -91,8 +91,8 @@ const Character = ({canvas, name, sprite, posX, posY, checkControlled, selectCha
     useEffect(()=> {
         console.log('Character is in: ', characterLocation);
         const isCharacterInRoom = ['projects', 'contacts', 'history'].includes(characterLocation);
-        drawerDispatch({type: `${isCharacterInRoom ? 'OPEN_DRAWER' : 'CLOSE_DRAWER'}`, room: characterLocation});
-    },[characterLocation, drawerDispatch])
+        officeDispatch({type: `${isCharacterInRoom ? 'OPEN_DRAWER' : 'CLOSE_DRAWER'}`, room: characterLocation});
+    },[characterLocation, officeDispatch])
 
 
     const checkCharacterLocation = () => {
@@ -182,7 +182,7 @@ const Character = ({canvas, name, sprite, posX, posY, checkControlled, selectCha
 
     return (
         <>
-            <div ref={characterRef} className={classes.character} onClick={() => selectCharacter(name)}/>
+            <div ref={characterRef} className={classes.character}/>
             <Popper
                 anchorEl={characterRef.current}
                 open={isPopperOpen}

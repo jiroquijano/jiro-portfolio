@@ -1,8 +1,8 @@
-import React, {useReducer, useState} from 'react';
+import React, {useReducer} from 'react';
 import OfficeCanvas from '../Office/OfficeCanvas'
 import {Grid, makeStyles, Drawer, Modal, useMediaQuery} from '@material-ui/core';
 import { Fade } from '@material-ui/core';
-import drawerStateReducer from '../../reducers/drawerStateReducer';
+import officeStateReducer from '../../reducers/officeStateReducer';
 import OfficePageContext from '../../context/OfficePageContext';
 import VisitorWelcomePage from './VisitorWelcomePage';
 
@@ -51,18 +51,24 @@ const useStyles = makeStyles({
     }
 })
 
+const initialOfficeState = {
+    drawerOpen: false,
+    currentRoom: null,
+    welcomeModalOpen: true,
+    currentCharacter: 'jiro'
+}
+
 const OfficePage = () => {
-    const [drawerState, drawerDispatch] = useReducer(drawerStateReducer, {open: false})
-    const [modalOpen, setModalOpen] = useState(true)
-    const isMobileScreen = useMediaQuery('(max-width:768px)')
+    const [officeState, officeDispatch] = useReducer(officeStateReducer, initialOfficeState);
+    const isMobileScreen = useMediaQuery('(max-width:768px)');
     const classes = useStyles({isMobileScreen});
 
-    const Content = <div className={classes.content}>{drawerState.room}</div>;
+    const Content = <div className={classes.content}>{officeState.currentRoom}</div>;
 
     return (
         <div className={classes.root}>
             <Fade in={true} timeout={500}>
-                <OfficePageContext.Provider value={{drawerState, drawerDispatch, welcomeModalOpen: modalOpen}}>
+                <OfficePageContext.Provider value={{officeState, officeDispatch}}>
                     <Grid container direction='column'>
                         <Grid container item direction='row' justify='center'>
                             <Grid item>
@@ -73,16 +79,16 @@ const OfficePage = () => {
                             {/* Instructions go here */}
                         </Grid>
                     </Grid>
-                    <Modal open={modalOpen} className={classes.modal}>
+                    <Modal open={officeState.welcomeModalOpen} className={classes.modal}>
                         <div className={classes.officePageModalContentContainer}>
-                            <VisitorWelcomePage handleClick={()=>setModalOpen(!modalOpen)}/>
+                            <VisitorWelcomePage/>
                         </div>
                     </Modal>
                 </OfficePageContext.Provider>
             </Fade>
 
-            <Drawer open={drawerState.open} variant='persistent' anchor='right' classes={{ paper: classes.transparentPaper }}/>
-            <Drawer open={drawerState.open} variant='persistent' anchor='right' classes={{ paper: classes.paperContainer }}>
+            <Drawer open={officeState.drawerOpen} variant='persistent' anchor='right' classes={{ paper: classes.transparentPaper }}/>
+            <Drawer open={officeState.drawerOpen} variant='persistent' anchor='right' classes={{ paper: classes.paperContainer }}>
                 <div children={Content}/>
             </Drawer>
 

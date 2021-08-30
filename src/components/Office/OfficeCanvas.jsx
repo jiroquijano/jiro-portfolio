@@ -1,12 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useContext} from 'react';
 import {Container, makeStyles} from '@material-ui/core';
 import Character from './Character';
 
 import OfficeHitMapContext from '../../context/OfficeHitMapContext';
 import OfficeBoundaryContext from '../../context/OfficeBoundaryContext';
+import OfficePageContext from '../../context/OfficePageContext';
+
 import OfficeDecorations from './OfficeDecorations';
-import officeDecorConfiguration from './Decorations/configurations/officeItemsConfig';
-import officeBoundaries from './Decorations/configurations/officeBoundaries';
+import officeDecorConfiguration from './Decorations/canvas-coordinates/officeItemsConfig';
+import officeBoundaries from './Decorations/canvas-coordinates/officeBoundaries';
+
 const JIRO_SPRITE = 'sprites/jiro-sprite-formal.png'
 const BONNA_SPRITE = 'sprites/bonna-sprite.png'
 
@@ -26,9 +29,9 @@ const useStyles = makeStyles({
 const OfficeCanvas = () => {
     const classes = useStyles();
     const canvasRef = useRef(null);
-    const [control, setControl] = useState('jiro');
     const [hitMap, setHitMap] = useState([]);
     const [boundaries, setBoundaries] = useState({});
+    const {officeState} = useContext(OfficePageContext);
 
     const calculateHitMap = () => {
         const boxesX =  Math.floor(canvasRef?.current?.offsetWidth/10);
@@ -40,7 +43,7 @@ const OfficeCanvas = () => {
     }
 
     const checkIfCharacterIsControlled = (name) => {
-        return name === control;
+        return name === officeState.currentCharacter;
     }
 
     useEffect(()=>{
@@ -58,11 +61,10 @@ const OfficeCanvas = () => {
                 <Character 
                     canvas={canvasRef}
                     sprite={BONNA_SPRITE}
-                    posX={740}
-                    posY={40}
+                    posX={900}
+                    posY={60}
                     name='bonna'
                     checkControlled={checkIfCharacterIsControlled}
-                    selectCharacter={setControl}
                 />
                 <Character 
                     canvas={canvasRef}
@@ -71,7 +73,6 @@ const OfficeCanvas = () => {
                     posY={310}
                     name='jiro'
                     checkControlled={checkIfCharacterIsControlled}
-                    selectCharacter={setControl}
                 />
             </OfficeBoundaryContext.Provider>
             </OfficeHitMapContext.Provider>
